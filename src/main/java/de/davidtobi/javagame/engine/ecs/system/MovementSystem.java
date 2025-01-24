@@ -40,8 +40,6 @@ public class MovementSystem extends System {
                     position.setY(newY);
                     position.setZ(newZ);
                 }
-
-                velocity.set(0, 0, 0);
             }
         }
     }

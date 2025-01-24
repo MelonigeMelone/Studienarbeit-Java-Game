@@ -25,7 +25,7 @@ public class ExampleScene extends Scene {
         Entity player = new Entity("Player", List.of(
                 new PositionComponent(50, 50, 1),
                 new SizeComponent(100, 100),
-                new TextureComponent(GameEngine.getResourceController().loadResource("/img/default.png", Texture.class)),
+                new TextureComponent(GameEngine.getResourceController().loadResource("/img/player.png", Texture.class)),
                 new VelocityComponent(0, 0, 0))
         );
 

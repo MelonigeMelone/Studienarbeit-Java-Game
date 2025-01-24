@@ -3,6 +3,7 @@ package de.davidtobi.javagame.game;
 import de.davidtobi.javagame.engine.ecs.component.VelocityComponent;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.event.event.input.KeyPressedEvent;
+import de.davidtobi.javagame.engine.event.event.input.KeyReleasedEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
 
@@ -17,20 +18,20 @@ public class TestListener implements Listener {
     }
 
     @EventHandler
-    public void onInput(KeyPressedEvent event) {
+    public void onInput(KeyReleasedEvent event) {
         VelocityComponent velocityComponent = player.getComponent(VelocityComponent.class);
 
         if(event.getKeyCode() == KeyEvent.VK_W) {
-            velocityComponent.add(0, -100, 0);
+            velocityComponent.add(0, -25, 0);
         }
         if(event.getKeyCode() == KeyEvent.VK_S) {
-            velocityComponent.add(0, 100, 0);
+            velocityComponent.add(0, 25, 0);
         }
         if(event.getKeyCode() == KeyEvent.VK_A) {
-            velocityComponent.add(-100, 0, 0);
+            velocityComponent.add(-25, 0, 0);
         }
         if(event.getKeyCode() == KeyEvent.VK_D) {
-            velocityComponent.add(100, 0, 0);
+            velocityComponent.add(25, 0, 0);
         }
     }
 }
