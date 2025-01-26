@@ -18,20 +18,19 @@ public class TestListener implements Listener {
     }
 
     @EventHandler
-    public void onInput(KeyReleasedEvent event) {
+    public void onInput(KeyPressedEvent event) {
         VelocityComponent velocityComponent = player.getComponent(VelocityComponent.class);
 
         if(event.getKeyCode() == KeyEvent.VK_W) {
-            velocityComponent.add(0, -25, 0);
-        }
-        if(event.getKeyCode() == KeyEvent.VK_S) {
-            velocityComponent.add(0, 25, 0);
-        }
-        if(event.getKeyCode() == KeyEvent.VK_A) {
-            velocityComponent.add(-25, 0, 0);
-        }
-        if(event.getKeyCode() == KeyEvent.VK_D) {
-            velocityComponent.add(25, 0, 0);
+            velocityComponent.set(0, -25, 0);
+        } else if(event.getKeyCode() == KeyEvent.VK_S) {
+            velocityComponent.set(0, 25, 0);
+        } else if(event.getKeyCode() == KeyEvent.VK_A) {
+            velocityComponent.set(-25, 0, 0);
+        } else if(event.getKeyCode() == KeyEvent.VK_D) {
+            velocityComponent.set(25, 0, 0);
+        } else {
+            velocityComponent.set(0,0,0);
         }
     }
 }

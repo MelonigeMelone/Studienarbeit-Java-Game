@@ -59,7 +59,7 @@ public class EntityRendererSystem extends RendererSystem {
 
                 VelocityComponent velocityComponent = entity.getComponent(VelocityComponent.class);
                 if (velocityComponent != null) {
-                    float rotation = 90f - (float) Math.toDegrees(Math.atan2(velocityComponent.getVy(), velocityComponent.getVx()));
+                    float rotation = 90f + (float) Math.toDegrees(Math.atan2(velocityComponent.getVy(), velocityComponent.getVx()));
                     image = RendererUtil.rotate(textureComponent.getTexture().getImage(), rotation);
                 }
 
