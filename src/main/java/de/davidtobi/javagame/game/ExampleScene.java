@@ -45,7 +45,7 @@ public class ExampleScene extends Scene {
         addEntity(new Entity("TestObject", List.of(
                 new PositionComponent(100, 100, 1),
                 new SizeComponent(100, 100),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/default.png", Texture.class))
+                new TextureComponent(GameEngine.getResourceController().loadResource("/img/default.png", Texture.class))
         )));
 
         addListener(new TestListener(player, camera));
