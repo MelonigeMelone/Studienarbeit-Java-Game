@@ -5,23 +5,28 @@ import java.awt.*;
 public class DimensionHelper {
 
     private final Dimension defaultDimension;
-    private Dimension currentdimension;
+    private Dimension currentDimension;
 
     public DimensionHelper(Dimension defaultDimension) {
         this.defaultDimension = defaultDimension;
-        this.currentdimension = defaultDimension;
+        this.currentDimension = defaultDimension;
     }
 
+    public Dimension getCurrentDimension() {
+        return currentDimension;
+    }
+
+
     public void setDimension(Dimension dimension) {
-        this.currentdimension = dimension;
+        this.currentDimension = dimension;
     }
 
     public float getScaleX() {
-        return (float) currentdimension.getWidth() / (float) defaultDimension.getWidth();
+        return (float) currentDimension.getWidth() / (float) defaultDimension.getWidth();
     }
 
     public float getScaleY() {
-        return (float) currentdimension.getHeight() / (float) defaultDimension.getHeight();
+        return (float) currentDimension.getHeight() / (float) defaultDimension.getHeight();
     }
 
     public float getCenteredX(float width) {

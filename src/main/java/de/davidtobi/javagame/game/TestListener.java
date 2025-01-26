@@ -1,6 +1,9 @@
 package de.davidtobi.javagame.game;
 
+import de.davidtobi.javagame.engine.camera.Camera;
+import de.davidtobi.javagame.engine.ecs.component.PositionComponent;
 import de.davidtobi.javagame.engine.ecs.component.VelocityComponent;
+import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.event.event.input.KeyPressedEvent;
 import de.davidtobi.javagame.engine.event.event.input.KeyReleasedEvent;
@@ -12,25 +15,32 @@ import java.awt.event.KeyEvent;
 public class TestListener implements Listener {
 
     private final Entity player;
+    private final Camera camera;
 
-    public TestListener(Entity player) {
+    public TestListener(Entity player, Camera camera) {
         this.player = player;
+        this.camera = camera;
     }
 
     @EventHandler
     public void onInput(KeyPressedEvent event) {
-        VelocityComponent velocityComponent = player.getComponent(VelocityComponent.class);
+        PositionComponent positionComponent = player.getComponent(PositionComponent.class);
+        RotationComponent rotationComponent = player.getComponent(RotationComponent.class);
 
         if(event.getKeyCode() == KeyEvent.VK_W) {
-            velocityComponent.set(0, -25, 0);
+            positionComponent.addY(25);
+            rotationComponent.setRotation(0);
         } else if(event.getKeyCode() == KeyEvent.VK_S) {
-            velocityComponent.set(0, 25, 0);
+            positionComponent.addY(-25);
+            rotationComponent.setRotation(180);
         } else if(event.getKeyCode() == KeyEvent.VK_A) {
-            velocityComponent.set(-25, 0, 0);
+            positionComponent.addX(25);
+            rotationComponent.setRotation(270);
         } else if(event.getKeyCode() == KeyEvent.VK_D) {
-            velocityComponent.set(25, 0, 0);
-        } else {
-            velocityComponent.set(0,0,0);
+            positionComponent.addX(-25);
+            rotationComponent.setRotation(90);
         }
+
+        camera.update(player);
     }
 }

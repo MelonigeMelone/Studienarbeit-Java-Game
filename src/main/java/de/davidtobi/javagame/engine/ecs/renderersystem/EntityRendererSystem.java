@@ -1,12 +1,14 @@
 package de.davidtobi.javagame.engine.ecs.renderersystem;
 
 import de.davidtobi.javagame.engine.GameEngine;
+import de.davidtobi.javagame.engine.camera.Camera;
 import de.davidtobi.javagame.engine.data.ShowMode;
 import de.davidtobi.javagame.engine.ecs.component.PositionComponent;
 import de.davidtobi.javagame.engine.ecs.component.SizeComponent;
 import de.davidtobi.javagame.engine.ecs.component.TextComponent;
 import de.davidtobi.javagame.engine.ecs.component.TextureComponent;
 import de.davidtobi.javagame.engine.ecs.component.VelocityComponent;
+import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
 import de.davidtobi.javagame.engine.ecs.model.Component;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.model.RendererSystem;
@@ -16,6 +18,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class EntityRendererSystem extends RendererSystem {
+
+    private final Camera camera;
+
+    public EntityRendererSystem(Camera camera) {
+        this.camera = camera;
+    }
 
     @Override
     public Class<? extends Component>[] getRequiredComponents() {
@@ -46,8 +54,8 @@ public class EntityRendererSystem extends RendererSystem {
             int width = (int) (sizeComponent.getWidth() * scaleX);
             int height = (int) (sizeComponent.getHeight() * scaleY);
 
-            float posX = position.getX() * scaleX;
-            float posY = position.getY() * scaleY;
+            float posX = (camera.getX() - position.getX()) * scaleX;
+            float posY = (camera.getY() - position.getY()) * scaleY;
 
             int centerX = (int) (posX - (float) width / 2);
             int centerY = (int) (posY - (float) height / 2);
@@ -61,6 +69,11 @@ public class EntityRendererSystem extends RendererSystem {
                 if (velocityComponent != null) {
                     float rotation = 90f + (float) Math.toDegrees(Math.atan2(velocityComponent.getVy(), velocityComponent.getVx()));
                     image = RendererUtil.rotate(textureComponent.getTexture().getImage(), rotation);
+                }
+
+                RotationComponent rotationComponent = entity.getComponent(RotationComponent.class);
+                if (rotationComponent != null) {
+                    image = RendererUtil.rotate(textureComponent.getTexture().getImage(), rotationComponent.getRotation());
                 }
 
                 graphics.drawImage(image, centerX, centerY, width, height, null);
