@@ -118,4 +118,47 @@ public String findePasswort(String[] sicherheitsSchluesell) {
 public boolean istPasswortKorrektV2(String passwort);
 ```
 
+## Level 4
 
+Programmcode schreiben - Das Tor hat ein elektrisches Schloss, was sich nur öffnet wenn der richtige Schlüssel übergeben wird.
+Der richtige Schlüssel befindet sich in einem gegebenen Array von Wörtern und ist ein Palindrom (ABBA, RADAR).
+
+Dem Tor wird folgendes als Beispiel übergeben: String[] wörter = {"abc", "race car", "level", "word"};
+
+### Aufgabe
+
+```java
+public boolean öffneTor(String[] wörter) {
+  // TODO: Überprüfe, ob eines der Wörter ein Palindrom ist
+}
+
+```
+
+### Lösung
+
+```java
+String[] wörter = {"abc", "race car", "level", "word"};
+
+public boolean öffneTor(String[] wörter) {
+    for (String wort : wörter) {
+        if (istPalindrom(wort)) {
+            return wort;
+        }
+    }
+    return "";
+}
+
+public boolean istPalindrom(String wort) {
+    int links = 0;
+    int rechts = wort.length() - 1;
+
+    while (links < rechts) {
+        if (wort.charAt(links) != wort.charAt(rechts)) {
+            return false;
+        }
+        links++;
+        rechts--;
+    }
+    return wort;
+}
+```
