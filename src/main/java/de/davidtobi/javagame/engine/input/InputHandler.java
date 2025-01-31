@@ -45,9 +45,10 @@ public class InputHandler extends JPanel implements KeyListener, MouseListener, 
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
+        char keyChar = e.getKeyChar();
 
         keys[keyCode] = false;
-        eventHandler.callEvent(new KeyReleasedEvent(keyCode));
+        eventHandler.callEvent(new KeyReleasedEvent(keyCode, keyChar));
     }
 
     @Override

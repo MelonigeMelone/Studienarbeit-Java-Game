@@ -9,6 +9,7 @@ import de.davidtobi.javagame.engine.ecs.component.TextComponent;
 import de.davidtobi.javagame.engine.ecs.component.TextureComponent;
 import de.davidtobi.javagame.engine.ecs.component.VelocityComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
+import de.davidtobi.javagame.engine.ecs.component.ui.UIPositionComponent;
 import de.davidtobi.javagame.engine.ecs.model.Component;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.model.RendererSystem;
@@ -16,6 +17,7 @@ import de.davidtobi.javagame.engine.util.RendererUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 
 public class EntityRendererSystem extends RendererSystem {
 
@@ -33,6 +35,18 @@ public class EntityRendererSystem extends RendererSystem {
     @Override
     public int getSystemPriority() {
         return 30;
+    }
+
+    @Override
+    public void addEntity(Entity entity) {
+        for (Class<? extends Component> componentClass : getRequiredComponents()) {
+            if (!entity.hasComponent(componentClass)) {
+                return;
+            }
+        }
+
+        entities.add(entity);
+        sortEntities();
     }
 
     @Override
@@ -114,5 +128,12 @@ public class EntityRendererSystem extends RendererSystem {
             }
 
         }
+    }
+
+    private void sortEntities() {
+        entities.sort(Comparator.comparingInt(entity -> {
+            PositionComponent position = entity.getComponent(PositionComponent.class);
+            return (int) position.getZ();
+        }));
     }
 }

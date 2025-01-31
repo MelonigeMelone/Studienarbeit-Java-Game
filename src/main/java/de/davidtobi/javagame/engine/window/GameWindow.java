@@ -24,7 +24,7 @@ public class GameWindow extends JFrame {
         setSize(screenSize);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
         addKeyListener(inputHandler);
 
         this.systemController = systemController;
