@@ -23,8 +23,10 @@ public class ExampleScene extends Scene {
 
         DimensionHelper dimensionHelper = GameEngine.getDimensionHelper();
 
-        camera = new Camera(dimensionHelper.getCenteredX(300), dimensionHelper.getCenteredY(300
-        ), GameEngine.getDimensionHelper().getCurrentDimension().width,
+        camera = new Camera(
+                dimensionHelper.getCenteredX(300),
+                dimensionHelper.getCenteredY(300),
+                GameEngine.getDimensionHelper().getCurrentDimension().width,
                 GameEngine.getDimensionHelper().getCurrentDimension().height);
 
         addRendererSystem(new EntityRendererSystem(camera));
