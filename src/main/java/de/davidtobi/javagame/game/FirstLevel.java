@@ -54,36 +54,37 @@ public class FirstLevel extends Scene {
                     }
 
                     for (int x = 2; x < 7; x++) {
-                        add(new LevelBlock(x, 13, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(x, 13, LevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for (int y = 2; y < 13; y++) {
-                        add(new LevelBlock(2, y, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(2, y, LevelBlockType.PATH_STRAIGHT, false));
                     }
                     for(int y = 13; y > 8; y--){
-                        add(new LevelBlock(7, y, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(7, y, LevelBlockType.PATH_STRAIGHT, false));
                     }
                     for (int x = 8; x < 14; x++) {
-                        add(new LevelBlock(x, 9, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(x, 9, LevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for(int y = 8; y > 5; y--){
-                        add(new LevelBlock(13, y, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(13, y, LevelBlockType.PATH_STRAIGHT, false));
                     }
                     for (int x = 13; x > 5; x--) {
-                        add(new LevelBlock(x, 5, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(x, 5, LevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for(int y = 4; y > 0; y--){
-                        add(new LevelBlock(6, y, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(6, y, LevelBlockType.PATH_STRAIGHT, false));
                     }
                     for (int x = 6; x < 19; x++) {
-                        add(new LevelBlock(x, 1, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(x, 1, LevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for (int y = 1; y < 7; y++) {
-                        add(new LevelBlock(18, y, LevelBlockType.ROCK, false));
+                        add(new LevelBlock(18, y, LevelBlockType.PATH_STRAIGHT, false));
                     }
+
                     for (int y = 1; y < 13; y++) {
                         add(new LevelBlock(4, y, LevelBlockType.TREE, true));
                     }
-                    for (int x = 5; x < 13; x++) {
+                    for (int x = 5; x < 12; x++) {
                         add(new LevelBlock(x, 7, LevelBlockType.TREE, true));
                     }
                     for (int x = 8; x < 17; x++) {
