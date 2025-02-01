@@ -1,22 +1,31 @@
 package de.davidtobi.javagame.game.world;
 
+import java.util.List;
+
 public class Level {
+
+    private int scale;
 
     private int sizeX, sizeY;
 
     private int playerStartX, playerStartY;
 
-    private WorldBlock background;
+    private LevelBlockType background;
 
-    private WorldBlock[][] decorations;
+    private List<LevelBlock> decorations;
 
-    public Level(int sizeX, int sizeY, int playerStartX, int playerStartY, WorldBlock background, WorldBlock[][] decorations) {
+    public Level(int scale, int sizeX, int sizeY, int playerStartX, int playerStartY, LevelBlockType background, List<LevelBlock> decorations) {
+        this.scale = scale;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.playerStartX = playerStartX;
         this.playerStartY = playerStartY;
         this.background = background;
         this.decorations = decorations;
+    }
+
+    public int getScale() {
+        return scale;
     }
 
     public int getSizeX() {
@@ -35,11 +44,11 @@ public class Level {
         return playerStartY;
     }
 
-    public WorldBlock getBackground() {
+    public LevelBlockType getBackground() {
         return background;
     }
 
-    public WorldBlock[][] getDecorations() {
+    public List<LevelBlock> getDecorations() {
         return decorations;
     }
 }

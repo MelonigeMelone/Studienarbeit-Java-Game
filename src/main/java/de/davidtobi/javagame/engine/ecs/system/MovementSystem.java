@@ -8,6 +8,8 @@ import de.davidtobi.javagame.engine.ecs.model.System;
 import de.davidtobi.javagame.engine.event.EventHandler;
 import de.davidtobi.javagame.engine.event.event.EntityMoveEvent;
 import de.davidtobi.javagame.engine.input.InputHandler;
+import de.davidtobi.javagame.engine.math.model.Vector2D;
+import de.davidtobi.javagame.engine.math.model.Vector3D;
 
 public class MovementSystem extends System {
 
@@ -28,18 +30,22 @@ public class MovementSystem extends System {
 
             if (position != null && velocity != null) {
 
-                EntityMoveEvent entityMoveEvent = new EntityMoveEvent(entity, position, velocity);
+                float newX = position.getX() + (velocity.getVx() * deltaTime * gameSpeed);
+                float newY = position.getY() + (velocity.getVy() * deltaTime * gameSpeed);
+                float newZ = position.getZ() + (velocity.getVz() * deltaTime * gameSpeed);
+
+                EntityMoveEvent entityMoveEvent = new EntityMoveEvent(entity, position,
+                        velocity, new Vector3D(newX, newY, newZ));
                 eventHandler.callEvent(entityMoveEvent);
 
                 if(!entityMoveEvent.isCancelled()) {
-                    float newX = position.getX() + (velocity.getVx() * deltaTime * gameSpeed);
-                    float newY = position.getY() + (velocity.getVy() * deltaTime * gameSpeed);
-                    float newZ = position.getZ() + (velocity.getVz() * deltaTime * gameSpeed);
 
                     position.setX(newX);
                     position.setY(newY);
                     position.setZ(newZ);
                 }
+
+                velocity.set(0,0,0);
             }
         }
     }

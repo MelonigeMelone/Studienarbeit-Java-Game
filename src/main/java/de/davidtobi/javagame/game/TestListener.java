@@ -5,11 +5,10 @@ import de.davidtobi.javagame.engine.camera.Camera;
 import de.davidtobi.javagame.engine.ecs.component.CollidableComponent;
 import de.davidtobi.javagame.engine.ecs.component.PositionComponent;
 import de.davidtobi.javagame.engine.ecs.component.SizeComponent;
-import de.davidtobi.javagame.engine.ecs.component.VelocityComponent;
+
 import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.event.event.input.KeyPressedEvent;
-import de.davidtobi.javagame.engine.event.event.input.KeyReleasedEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
 

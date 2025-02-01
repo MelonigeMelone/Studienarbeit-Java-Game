@@ -4,22 +4,20 @@ import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.camera.Camera;
 import de.davidtobi.javagame.engine.ecs.component.*;
 import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
-import de.davidtobi.javagame.engine.ecs.component.ui.UITextureComponent;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.renderersystem.EntityRendererSystem;
-import de.davidtobi.javagame.engine.ecs.system.MovementSystem;
 import de.davidtobi.javagame.engine.resource.model.Texture;
 import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
 import de.davidtobi.javagame.game.world.Level;
-import de.davidtobi.javagame.game.world.WorldBlock;
+import de.davidtobi.javagame.game.world.LevelBlockType;
 
 import java.util.List;
 
 public class ExampleScene extends Scene {
 
     private final Camera camera;
-    private final Entity player;
+    //private final Entity player;
     public ExampleScene() {
         super("exampleScene");
 
@@ -33,28 +31,28 @@ public class ExampleScene extends Scene {
 
 
 
-        Level level = new Level(25, 25, 3, 3, WorldBlock.GRASS, new WorldBlock[][] {
-                {WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE, WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE,WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
-                {WorldBlock.TREE},
+        /*Level level = new Level(25, 25, 3, 3, LevelBlockType.GRASS, new LevelBlockType[][] {
+                {LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE, LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
+                {LevelBlockType.TREE},
         });
 
 
@@ -91,11 +89,11 @@ public class ExampleScene extends Scene {
 
 
 
-        addListener(new TestListener(player, camera));
+        addListener(new TestListener(player, camera));*/
     }
 
     @Override
     public void onEnter() {
-        camera.update(player);
+       // camera.update(player);
     }
 }

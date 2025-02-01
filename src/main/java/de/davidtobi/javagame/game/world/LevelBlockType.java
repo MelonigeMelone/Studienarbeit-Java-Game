@@ -1,12 +1,12 @@
 package de.davidtobi.javagame.game.world;
 
-public enum WorldBlock {
+public enum LevelBlockType {
     TREE("/img/tree.png"),
     GRASS("/img/grass.png");
 
     private String resourcePath;
 
-    WorldBlock(String resourcePath) {
+    LevelBlockType(String resourcePath) {
         this.resourcePath = resourcePath;
     }
 
