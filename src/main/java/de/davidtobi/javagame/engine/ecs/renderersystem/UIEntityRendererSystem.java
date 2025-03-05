@@ -149,50 +149,39 @@ public class UIEntityRendererSystem extends RendererSystem {
         String labelValue = codingComponent.getValue();
         int textHeight = fontMetrics.getHeight();
 
-
-        List<String> lines = new ArrayList<>();
-        StringBuilder currentLine = new StringBuilder();
-        String[] words = labelValue.split(" ");
-
-        for (String word : words) {
-
-            String testLine = currentLine + (currentLine.isEmpty() ? "" : " ") + word;
-            int testLineWidth = fontMetrics.stringWidth(testLine);
-
-            if (testLineWidth > width) {
-
-                lines.add(currentLine.toString());
-                currentLine = new StringBuilder(word);
-            } else {
-                if (!currentLine.isEmpty()) {
-                    currentLine.append(" ");
-                }
-                currentLine.append(word);
-            }
-        }
-
-        if (!currentLine.isEmpty()) {
-            lines.add(currentLine.toString());
-        }
+        // Split text by \n to handle line breaks properly
+        String[] lines = labelValue.split("\n");
 
         int currentPosY = posY;
         for (String line : lines) {
-            String[] words2 = line.split(" ");
-            for (String word : words2) {
+            // Use a regex to split words but keep punctuation (e.g., operators, punctuation marks, etc.)
+            String[] words = line.split("(?<=\\W)|(?=\\W)"); // Split words and keep non-word characters
+            int currentPosX = posX;
+
+            for (String word : words) {
+                // Calculate the width of the word
                 int wordWidth = fontMetrics.stringWidth(word);
-                int labelPosX = RendererUtil.getAdjustedX(posX, width, wordWidth, codingComponent.getHorizontalAlignment());
+
+                // Get the adjusted X and Y positions based on the alignment settings
+                int labelPosX = RendererUtil.getAdjustedX(currentPosX, width, wordWidth, codingComponent.getHorizontalAlignment());
                 int labelPosY = RendererUtil.getAdjustedY(currentPosY, height, textHeight, fontMetrics, codingComponent.getVerticalAlignment());
 
-                Color color = codingComponent.getColor();
-                if(codingComponent.getSyntaxHighlighter() != null) {
-                 color = codingComponent.getSyntaxHighlighter().getColor(word, codingComponent.getColor());
-                }
+                // Use the SyntaxHighlighter to get the color for the current word
+                Color color = codingComponent.getSyntaxHighlighter().getColor(word, Color.white);
+
+                // Set the graphics color to the one returned by the highlighter
                 graphics.setColor(color);
+
+                // Draw the word at the calculated position
                 graphics.drawString(word, labelPosX, labelPosY);
-                posX += wordWidth + fontMetrics.stringWidth(" ");
+
+                // Update the X position for the next word
+                currentPosX += wordWidth;
             }
+
+            // Move down to the next line
             currentPosY += textHeight;
-            posX = (int) (posX * scaleX); // Reset posX to the start of the next line
         }
     }
+
 }

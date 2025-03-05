@@ -19,6 +19,8 @@ public class UICodingComponent implements Component {
     private SyntaxHighlighter syntaxHighlighter;
     private Supplier<String> valueSupplier;
 
+    private boolean isFocused;
+
     public UICodingComponent(Color color, Font font, HorizontalAlignment horizontalAlignment,
                              VerticalAlignment verticalAlignment, SyntaxHighlighter syntaxHighlighter, Supplier<String> valueSupplier) {
         this.color = color;
@@ -27,6 +29,7 @@ public class UICodingComponent implements Component {
         this.verticalAlignment = verticalAlignment;
         this.syntaxHighlighter = syntaxHighlighter;
         this.valueSupplier = valueSupplier;
+        this.isFocused = false;
     }
 
     public String getValue() {
@@ -71,5 +74,13 @@ public class UICodingComponent implements Component {
 
     public SyntaxHighlighter getSyntaxHighlighter() {
         return syntaxHighlighter;
+    }
+
+    public boolean isFocused() {
+        return isFocused;
+    }
+
+    public void setFocused(boolean focused) {
+        isFocused = focused;
     }
 }
