@@ -40,7 +40,8 @@ public class LevelScene extends Scene {
         player = new Entity("Player", List.of(
                 new PositionComponent(level.getPlayerStartX() * level.getScale(), level.getPlayerStartY() * level.getScale(), 3),
                 new SizeComponent(level.getScale(), level.getScale()),
-                new TextureComponent(GameEngine.getResourceController().loadResource("/img/player.png", Texture.class)),
+                //new TextureComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class)),
+                new SpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class), 64, 64),
                 new RotationComponent(0),
                 new VelocityComponent(0,0,0),
                 new CollidableComponent())

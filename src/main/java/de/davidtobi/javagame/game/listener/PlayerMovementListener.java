@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 
 public class PlayerMovementListener implements Listener {
 
-    private final int PLAYER_SPEED = 500;
+    private final int PLAYER_SPEED = 250;
 
     private final Camera camera;
     private final Entity player;
@@ -41,5 +41,7 @@ public class PlayerMovementListener implements Listener {
             velocityComponent.set(-PLAYER_SPEED,0, 0);
             rotationComponent.setRotation(90);
         }
+
+        camera.update(player);
     }
 }

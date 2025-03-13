@@ -12,6 +12,10 @@ public class VelocityComponent implements Component {
         this.vz = vz;
     }
 
+    public boolean isMoving() {
+        return vx != 0 || vy != 0 || vz != 0;
+    }
+
     public void set(float vx, float vy, float vz) {
         this.vx = vx;
         this.vy = vy;

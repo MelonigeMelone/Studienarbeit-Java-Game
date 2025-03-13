@@ -3,16 +3,14 @@ package de.davidtobi.javagame.engine.ecs.renderersystem;
 import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.camera.Camera;
 import de.davidtobi.javagame.engine.data.ShowMode;
-import de.davidtobi.javagame.engine.ecs.component.PositionComponent;
-import de.davidtobi.javagame.engine.ecs.component.SizeComponent;
+import de.davidtobi.javagame.engine.ecs.component.*;
 import de.davidtobi.javagame.engine.ecs.component.TextComponent;
-import de.davidtobi.javagame.engine.ecs.component.TextureComponent;
-import de.davidtobi.javagame.engine.ecs.component.VelocityComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UIPositionComponent;
 import de.davidtobi.javagame.engine.ecs.model.Component;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.model.RendererSystem;
+import de.davidtobi.javagame.engine.util.PlayerSpriteSheetUtil;
 import de.davidtobi.javagame.engine.util.RendererUtil;
 
 import java.awt.*;
@@ -78,19 +76,32 @@ public class EntityRendererSystem extends RendererSystem {
             if (textureComponent != null) {
 
                 BufferedImage image = textureComponent.getTexture().getImage();
+                drawBufferedImage(graphics, image, entity.getComponent(VelocityComponent.class), entity.getComponent(RotationComponent.class)
+                        , centerX, centerY, width, height);
+            } else if(entity.hasComponent(SpriteSheetComponent.class)) {
+                SpriteSheetComponent spriteSheetComponent = entity.getComponent(SpriteSheetComponent.class);
+                BufferedImage sprite = spriteSheetComponent.getSprite(0, 0);
+
+                if(sprite == null) {
+                    return;
+                }
+
+                int spriteSheetAnimationCounter = spriteSheetComponent.getSpriteSheetAnimationCounter();
 
                 VelocityComponent velocityComponent = entity.getComponent(VelocityComponent.class);
                 if (velocityComponent != null) {
-                    float rotation = 90f + (float) Math.toDegrees(Math.atan2(velocityComponent.getVy(), velocityComponent.getVx()));
-                    image = RendererUtil.rotate(textureComponent.getTexture().getImage(), rotation);
+                    if(velocityComponent.isMoving()) {
+                        spriteSheetComponent.incrementSpriteSheetAnimationCounter();
+
+                    }
                 }
 
                 RotationComponent rotationComponent = entity.getComponent(RotationComponent.class);
                 if (rotationComponent != null) {
-                    image = RendererUtil.rotate(textureComponent.getTexture().getImage(), rotationComponent.getRotation());
+                    sprite = spriteSheetComponent.getSprite(spriteSheetAnimationCounter, PlayerSpriteSheetUtil.getSpriteSheetYBasedOnRotation(rotationComponent.getRotation()));
                 }
 
-                graphics.drawImage(image, centerX, centerY, width, height, null);
+                graphics.drawImage(sprite, centerX, centerY, width, height, null);
             } else {
                 graphics.setColor(Color.WHITE);
                 graphics.drawRect(centerX, centerY, width, height);
@@ -128,6 +139,19 @@ public class EntityRendererSystem extends RendererSystem {
             }
 
         }
+    }
+
+    private void drawBufferedImage(Graphics graphics, BufferedImage image, VelocityComponent velocityComponent, RotationComponent rotationComponent, int centerX, int centerY, int width, int height) {
+        if (velocityComponent != null) {
+            float rotation = 90f + (float) Math.toDegrees(Math.atan2(velocityComponent.getVy(), velocityComponent.getVx()));
+            image = RendererUtil.rotate(image, rotation);
+        }
+
+        if (rotationComponent != null) {
+            image = RendererUtil.rotate(image, rotationComponent.getRotation());
+        }
+
+        graphics.drawImage(image, centerX, centerY, width, height, null);
     }
 
     private void sortEntities() {
