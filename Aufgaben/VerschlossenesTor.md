@@ -162,3 +162,142 @@ public boolean istPalindrom(String wort) {
     return wort;
 }
 ```
+## Level 5
+
+Objektorientierung – Die magischen Türen
+Ein Gebäude hat mehrere Türen, die nur mit einem speziellen Schlüssel geöffnet werden können. Jede Tür ist ein eigenes Objekt mit einer Farbe und einem Status (offen oder geschlossen).
+
+### Aufgabe
+
+```java
+class Tuer {
+  // TODO: Definiere eine Klasse Tür mit Attributen für Farbe und Status
+}
+
+```
+
+### Lösung
+
+```java
+class Tuer {
+    String farbe;
+    boolean istOffen;
+
+    Tuer(String farbe) {
+        this.farbe = farbe;
+        this.istOffen = false;
+    }
+
+    void oeffneTuer() {
+        this.istOffen = true;
+    }
+}
+```
+
+## Level 6
+
+Vererbung – Die Roboterwächter
+Der Spieler trifft auf verschiedene Roboterwächter. Manche können laufen, andere fliegen. Er muss die richtigen Klassenstrukturen nutzen, um die Fähigkeiten der Roboter abzubilden.
+
+### Aufgabe
+
+```java
+class Roboter {
+  // TODO: Definiere eine Basisklasse Roboter und leite spezialisierte Klassen LaufenderRoboter und FliegenderRoboter davon ab
+}
+
+```
+
+### Lösung
+
+```java
+class Roboter {
+    String name;
+
+    Roboter(String name) {
+        this.name = name;
+    }
+}
+
+class LaufenderRoboter extends Roboter {
+    LaufenderRoboter(String name) {
+        super(name);
+    }
+
+    void laufen() {
+        System.out.println(name + " läuft...");
+    }
+}
+
+class FliegenderRoboter extends Roboter {
+    FliegenderRoboter(String name) {
+        super(name);
+    }
+
+    void fliegen() {
+        System.out.println(name + " fliegt...");
+    }
+}
+```
+
+## Level 7
+
+Exceptions – Sicherheitscode validieren
+Der Spieler muss einen Sicherheitscode eingeben. Falls der Code ungültig ist, soll eine InvalidCodeException geworfen werden.
+
+### Aufgabe
+
+```java
+// TODO: Implementiere eine Methode zur Validierung des Codes
+public void validateCode(String code) throws InvalidCodeException {
+    // Überprüfe, ob der Code eine bestimmte Länge hat
+}
+```
+
+### Lösung
+
+```java
+class InvalidCodeException extends Exception {
+    public InvalidCodeException(String message) {
+        super(message);
+    }
+}
+
+public void validateCode(String code) throws InvalidCodeException {
+    if (code.length() != 6) {
+        throw new InvalidCodeException("Der Code muss genau 6 Zeichen lang sein!");
+    }
+}
+```
+
+## Level 8
+
+Threads – Zeitlimit für das Rätsel
+Der Spieler hat nur 10 Sekunden Zeit, um ein Rätsel zu lösen. Ein separater Thread zählt die Zeit herunter.
+
+### Aufgabe
+
+```java
+class TimerThread extends Thread {
+// TODO: Implementiere einen Timer-Thread, der nach 10 Sekunden eine Nachricht ausgibt
+}
+```
+
+### Lösung
+
+```java
+class TimerThread extends Thread {
+    public void run() {
+        try {
+            Thread.sleep(10000);
+            System.out.println("Zeit abgelaufen!");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// Starten des Timers
+TimerThread timer = new TimerThread();
+timer.start();
+```
