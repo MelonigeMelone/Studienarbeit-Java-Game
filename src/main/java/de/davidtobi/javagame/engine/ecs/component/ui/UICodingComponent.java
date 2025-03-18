@@ -20,6 +20,7 @@ public class UICodingComponent implements Component {
     private Supplier<String> valueSupplier;
 
     private boolean isFocused;
+    private FontMetrics fontMetrics;
 
     public UICodingComponent(Color color, Font font, HorizontalAlignment horizontalAlignment,
                              VerticalAlignment verticalAlignment, SyntaxHighlighter syntaxHighlighter, Supplier<String> valueSupplier) {
@@ -82,5 +83,13 @@ public class UICodingComponent implements Component {
 
     public void setFocused(boolean focused) {
         isFocused = focused;
+    }
+
+    public FontMetrics getFontMetrics() {
+        return fontMetrics;
+    }
+
+    public void setFontMetrics(FontMetrics fontMetrics) {
+        this.fontMetrics = fontMetrics;
     }
 }

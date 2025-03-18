@@ -10,8 +10,17 @@ import de.davidtobi.javagame.engine.event.event.EntityMoveEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
 import de.davidtobi.javagame.engine.math.model.Vector3D;
+import de.davidtobi.javagame.game.scene.LevelScene;
+
+import java.util.Optional;
 
 public class EntityCollisionListener implements Listener {
+
+    private final LevelScene levelScene;
+
+    public EntityCollisionListener(LevelScene levelScene) {
+        this.levelScene = levelScene;
+    }
 
     @EventHandler
     public void onEntityMove(EntityMoveEvent entityMoveEvent) {
@@ -21,12 +30,14 @@ public class EntityCollisionListener implements Listener {
         }
 
 
-        boolean collision = GameEngine.getEntityController().getEntities().stream().filter(target ->
+        Optional<Entity> optionalEntity = GameEngine.getEntityController().getEntities().stream().filter(target ->
                 !target.isDisabled() && !target.getUUID().equals(entity.getUUID()) &&
-                        target.hasComponent(CollidableComponent.class))
-                .anyMatch(target -> collidesWithEntity(entity, target, entityMoveEvent.getNextPosition()));
+                        target.hasComponent(CollidableComponent.class) &&
+                        collidesWithEntity(entity, target, entityMoveEvent.getNextPosition())).findFirst();
 
-        entityMoveEvent.setCancelled(collision);
+        levelScene.setCollidingEntity(optionalEntity.orElse(null));
+
+        entityMoveEvent.setCancelled(optionalEntity.isPresent());
     }
 
     public boolean collidesWithEntity(Entity entity, Entity target, Vector3D nextPosition) {

@@ -38,10 +38,10 @@ public class FirstLevel extends Scene {
 
         Level level = new Level(
                 50,
+                200,
+                150,
                 20,
-                15,
-                2,
-                2,
+                20,
                 LevelBlockType.GRASS,
                 new ArrayList<>() {{
                     for (int x = 0; x < 20; x++) {

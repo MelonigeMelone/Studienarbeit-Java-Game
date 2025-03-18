@@ -6,7 +6,6 @@ import de.davidtobi.javagame.engine.data.ShowMode;
 import de.davidtobi.javagame.engine.ecs.component.*;
 import de.davidtobi.javagame.engine.ecs.component.TextComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
-import de.davidtobi.javagame.engine.ecs.component.ui.UIPositionComponent;
 import de.davidtobi.javagame.engine.ecs.model.Component;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.model.RendererSystem;
@@ -27,7 +26,7 @@ public class EntityRendererSystem extends RendererSystem {
 
     @Override
     public Class<? extends Component>[] getRequiredComponents() {
-        return new Class[0];
+        return new Class[] {PositionComponent.class, SizeComponent.class};
     }
 
     @Override
@@ -98,7 +97,12 @@ public class EntityRendererSystem extends RendererSystem {
 
                 RotationComponent rotationComponent = entity.getComponent(RotationComponent.class);
                 if (rotationComponent != null) {
-                    sprite = spriteSheetComponent.getSprite(spriteSheetAnimationCounter, PlayerSpriteSheetUtil.getSpriteSheetYBasedOnRotation(rotationComponent.getRotation()));
+                    if(entity.getEntityTag().equals("Roboter")) {
+                       //TODO
+                        sprite = spriteSheetComponent.getSprite(0,0);
+                    } else {
+                        sprite = spriteSheetComponent.getSprite(spriteSheetAnimationCounter, PlayerSpriteSheetUtil.getSpriteSheetYBasedOnRotationPlayer(rotationComponent.getRotation()));
+                    }
                 }
 
                 graphics.drawImage(sprite, centerX, centerY, width, height, null);

@@ -1,4 +1,6 @@
-public class test {
-    public static int getValue() {
-        return 5;
-}}
+public class Gate {
+    public static void main(String[] args) {
+        boolean isGateOpen = true;
+        setGateStatus(isGateOpen);
+    }
+}

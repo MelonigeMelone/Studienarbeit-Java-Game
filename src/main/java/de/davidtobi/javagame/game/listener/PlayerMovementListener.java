@@ -6,7 +6,9 @@ import de.davidtobi.javagame.engine.ecs.component.ui.RotationComponent;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.event.event.input.KeyPressedEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
+import de.davidtobi.javagame.engine.event.model.EventPriority;
 import de.davidtobi.javagame.engine.event.model.Listener;
+import de.davidtobi.javagame.game.scene.LevelScene;
 
 import java.awt.event.KeyEvent;
 
@@ -16,21 +18,26 @@ public class PlayerMovementListener implements Listener {
 
     private final Camera camera;
     private final Entity player;
+    private final LevelScene levelScene;
 
-
-    public PlayerMovementListener(Camera camera, Entity player) {
+    public PlayerMovementListener(Camera camera, Entity player, LevelScene levelScene) {
         this.player = player;
         this.camera = camera;
+        this.levelScene = levelScene;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInput(KeyPressedEvent event) {
+        if(levelScene.isInTextSequence()) {
+            return;
+        }
+
         VelocityComponent velocityComponent = player.getComponent(VelocityComponent.class);
         RotationComponent rotationComponent = player.getComponent(RotationComponent.class);
 
         if(event.getKeyCode() == KeyEvent.VK_W) {
             velocityComponent.set(0,PLAYER_SPEED, 0);
-            rotationComponent.setRotation(0);
+            rotationComponent.setRotation(0);;
         } else if(event.getKeyCode() == KeyEvent.VK_S) {
             velocityComponent.set(0,-PLAYER_SPEED, 0);
             rotationComponent.setRotation(180);
@@ -43,5 +50,17 @@ public class PlayerMovementListener implements Listener {
         }
 
         camera.update(player);
+        syncRoboter();
+    }
+
+    private void syncRoboter() {
+        VelocityComponent velocityComponent = player.getComponent(VelocityComponent.class);
+        RotationComponent rotationComponent = player.getComponent(RotationComponent.class);
+
+        VelocityComponent roboterVelocityComponent = levelScene.getRoboter().getComponent(VelocityComponent.class);
+        RotationComponent roboterRotationComponent = levelScene.getRoboter().getComponent(RotationComponent.class);
+
+        roboterVelocityComponent.set(velocityComponent.getVx(), velocityComponent.getVy(), velocityComponent.getVz());
+        roboterRotationComponent.setRotation(rotationComponent.getRotation());
     }
 }

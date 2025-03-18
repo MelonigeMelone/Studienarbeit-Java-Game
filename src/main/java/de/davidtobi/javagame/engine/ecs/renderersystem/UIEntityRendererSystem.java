@@ -145,6 +145,7 @@ public class UIEntityRendererSystem extends RendererSystem {
         Font scaledFont = codingComponent.getFont().deriveFont(codingComponent.getFont().getSize() * scaleX);
         graphics.setFont(scaledFont);
         FontMetrics fontMetrics = graphics.getFontMetrics();
+        codingComponent.setFontMetrics(fontMetrics);
 
         String labelValue = codingComponent.getValue();
         int textHeight = fontMetrics.getHeight();

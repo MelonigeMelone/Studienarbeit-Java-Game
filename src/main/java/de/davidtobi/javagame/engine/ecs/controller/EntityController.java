@@ -1,6 +1,7 @@
 package de.davidtobi.javagame.engine.ecs.controller;
 
 import de.davidtobi.javagame.engine.ecs.model.Entity;
+import de.davidtobi.javagame.engine.ecs.model.RendererSystem;
 
 import java.util.ArrayList;
 import java.util.List;

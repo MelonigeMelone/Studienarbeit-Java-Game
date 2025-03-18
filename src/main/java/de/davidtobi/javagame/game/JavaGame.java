@@ -13,11 +13,12 @@ import de.davidtobi.javagame.game.world.LevelBlockType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
 
 public class JavaGame extends AbstractGame {
     @Override
     public EngineLoggerLevel getLoggerLevel() {
-        return EngineLoggerLevel.DEBUG;
+        return EngineLoggerLevel.INFORMATION;
     }
 
     @Override
@@ -32,12 +33,12 @@ public class JavaGame extends AbstractGame {
 
     @Override
     public Scene getStartScene() {
-        //return new FirstLevel();
+        //return new CodingScene();
         return new LevelScene(new Level(
                 50,
                 20,
                 15,
-                2,
+                17,
                 2,
                 LevelBlockType.GRASS,
                 new ArrayList<>() {{
@@ -113,7 +114,12 @@ public class JavaGame extends AbstractGame {
                         add(new LevelBlock(9, y, LevelBlockType.TREE, true));
                     }
 
-                    add(new LevelBlock(18, 7, LevelBlockType.GATE, true));
+                    add(new LevelBlock(18, 7, LevelBlockType.GATE, true, new Supplier<Scene>() {
+                        @Override
+                        public Scene get() {
+                            return new CodingScene();
+                        }
+                    }));
                     add(new LevelBlock(19, 7, LevelBlockType.ROCK, true));
 
                     List<LevelBlock> temp = new ArrayList<>();
