@@ -14,6 +14,9 @@ import de.davidtobi.javagame.engine.event.model.Listener;
 import de.davidtobi.javagame.engine.resource.model.Texture;
 import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
+import de.davidtobi.javagame.game.data.TextSequences;
+import de.davidtobi.javagame.game.listener.TextSequenceListener;
+import de.davidtobi.javagame.game.model.TextSequence;
 import de.davidtobi.javagame.game.util.JavaCompilerUtil;
 
 import javax.swing.*;
@@ -31,6 +34,13 @@ public class CodingScene extends Scene implements Listener {
     private Timer cursorTimer;
 
     private final Entity codingBox;
+
+    private Entity textbox;
+    private Entity textboxText;
+    private Entity textboxNarrator;
+
+    private boolean inTextSequence = false;
+    private TextSequence currentTextSequence;
 
     private String code = "public class Gate {\n" +
             "    public static void main(String[] args) {\n" +
@@ -80,7 +90,7 @@ public class CodingScene extends Scene implements Listener {
                 })
         )));
 
-        addEntity(new Entity("CodingBox", List.of(
+        addEntity(new Entity("CompileButton", List.of(
                 new UIPositionComponent(dimensionHelper.getCenteredX(108) + 325, dimensionHelper.getCenteredY(60) + 225, 2),
                 new UISizeComponent(190, 45),
                 new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/buttonGreen.png", Texture.class)),
@@ -92,6 +102,12 @@ public class CodingScene extends Scene implements Listener {
                 })
         )));
 
+        addEntity(new Entity("HelpButton", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(108) + 425, dimensionHelper.getCenteredY(60) - 175, 2),
+                new UISizeComponent(50, 50),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/helpIcon.png", Texture.class))
+        )));
+
         codingBox = new Entity("CodingBox", List.of(
                 new UIPositionComponent(dimensionHelper.getCenteredX(1080) + 100, dimensionHelper.getCenteredY(608) + 125, 2),
                 new UISizeComponent(1080, 608),
@@ -101,12 +117,54 @@ public class CodingScene extends Scene implements Listener {
         ));
         addEntity(codingBox);
 
+        textboxNarrator = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(1080) + 150, dimensionHelper.getCenteredY(608) + 450, 20),
+                new UISizeComponent(1080, 608),
+                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.CENTER, VerticalAlignment.TOP, new Supplier<String>() {
+                    @Override
+                    public String get() {
+                        if(currentTextSequence == null) {
+                            return "";
+                        }
+                        return currentTextSequence.getTextSequences().getNarrator();
+                    }
+                })
+        ));
+        textboxNarrator.setDisabled(true);
+        addEntity(textboxNarrator);
+
+        textboxText = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(900), dimensionHelper.getCenteredY(608) + 510, 20),
+                new UISizeComponent(900, 608),
+                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 20), HorizontalAlignment.LEFT, VerticalAlignment.TOP, new Supplier<String>() {
+                    @Override
+                    public String get() {
+                        if(currentTextSequence == null) {
+                            return "";
+                        }
+                        return currentTextSequence.getCurrentSequence();
+                    }
+                })
+        ));
+        textboxText.setDisabled(true);
+        addEntity(textboxText);
+
+        textbox = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(1080), 450, 18),
+                new UISizeComponent(1080, 608),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/textbox1.png", Texture.class))
+        ));
+        textbox.setDisabled(true);
+        addEntity(textbox);
+
         cursorVisible = true;
         cursorTimer = new Timer(500, e -> {
             cursorVisible = !cursorVisible;
             // Trigger a repaint or update the UI to reflect the cursor visibility change
         });
         cursorTimer.start();
+
+        openTextSequence(new TextSequence(TextSequences.LEVEL_1_BOOLEAN));
     }
 
     @Override
@@ -116,6 +174,18 @@ public class CodingScene extends Scene implements Listener {
 
     @EventHandler
     public void onKeyReleased(KeyReleasedEvent event) {
+        if(inTextSequence) {
+            if(!currentTextSequence.hasNextSequence()) {
+                closeTextSequence();
+                return;
+            }
+
+            if(event.getKeyCode() == KeyEvent.VK_ENTER) {
+                currentTextSequence.nextSequence();
+            }
+            return;
+        }
+
         int keyCode = event.getKeyCode();
         char keyChar = event.getKeyChar();
 
@@ -215,4 +285,25 @@ public class CodingScene extends Scene implements Listener {
         cursorIndex = code.length();
     }
 
+    public void openTextSequence(TextSequence textSequence) {
+        this.inTextSequence = true;
+        this.currentTextSequence = textSequence;
+
+        textbox.setDisabled(false);
+        textboxText.setDisabled(false);
+        textboxNarrator.setDisabled(false);
+    }
+
+    public void closeTextSequence() {
+        this.inTextSequence = false;
+        this.currentTextSequence = null;
+
+        textbox.setDisabled(true);
+        textboxText.setDisabled(true);
+        textboxNarrator.setDisabled(true);
+    }
+
+    public boolean isInTextSequence() {
+        return inTextSequence;
+    }
 }
