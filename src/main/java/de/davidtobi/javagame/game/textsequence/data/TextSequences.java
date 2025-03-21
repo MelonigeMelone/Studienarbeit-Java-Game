@@ -1,4 +1,6 @@
-package de.davidtobi.javagame.game.data;
+package de.davidtobi.javagame.game.textsequence.data;
+
+import java.util.HashMap;
 
 public enum TextSequences {
     INTRO("Erzähler", new String[] {
@@ -17,19 +19,27 @@ public enum TextSequences {
             "Zusammengefasst zeigt dieser Code, wie man mit einer 'boolean'-Variablen den Zustand eines Tors steuert. Am Anfang ist das Tor geschlossen ('false'), und dann wird dieser Zustand durch die Methode 'setGateStatus' möglicherweise an eine andere Stelle im Programm übergeben, um weiter damit zu arbeiten."
     });
 
-    private final String narrator;
-    private final String[] textSequences;
+    private final TextSequenceMessage[] textSequenceMessages;
+    private final int sequenceCount;
 
     TextSequences(String narrator, String[] textSequences) {
-        this.narrator = narrator;
-        this.textSequences = textSequences;
+        textSequenceMessages = new TextSequenceMessage[textSequences.length];
+       for(int i = 0; i < textSequences.length; i++) {
+           textSequenceMessages[i] = new TextSequenceMessage(narrator, textSequences[i]);
+       }
+        this.sequenceCount = textSequenceMessages.length;
     }
 
-    public String getNarrator() {
-        return narrator;
+    TextSequences(TextSequenceMessage[] textSequenceMessages) {
+        this.textSequenceMessages = textSequenceMessages;
+        this.sequenceCount = textSequenceMessages.length;
     }
 
-    public String[] getTextSequences() {
-        return textSequences;
+    public TextSequenceMessage[] getTextSequenceMessages() {
+        return textSequenceMessages;
+    }
+
+    public int getSequenceCount() {
+        return sequenceCount;
     }
 }

@@ -2,11 +2,7 @@ package de.davidtobi.javagame.game.scene;
 
 import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.camera.Camera;
-import de.davidtobi.javagame.engine.data.HorizontalAlignment;
-import de.davidtobi.javagame.engine.data.ShowMode;
-import de.davidtobi.javagame.engine.data.VerticalAlignment;
 import de.davidtobi.javagame.engine.ecs.component.*;
-import de.davidtobi.javagame.engine.ecs.component.TextComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.*;
 import de.davidtobi.javagame.engine.ecs.model.Component;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
@@ -14,37 +10,27 @@ import de.davidtobi.javagame.engine.ecs.renderersystem.EntityRendererSystem;
 import de.davidtobi.javagame.engine.ecs.renderersystem.UIEntityRendererSystem;
 import de.davidtobi.javagame.engine.ecs.system.MovementSystem;
 import de.davidtobi.javagame.engine.resource.model.Texture;
-import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
-import de.davidtobi.javagame.game.data.TextSequences;
+import de.davidtobi.javagame.game.textsequence.data.TextSequences;
 import de.davidtobi.javagame.game.listener.EntityCollisionListener;
 import de.davidtobi.javagame.game.listener.InteractListener;
 import de.davidtobi.javagame.game.listener.PlayerMovementListener;
-import de.davidtobi.javagame.game.listener.TextSequenceListener;
-import de.davidtobi.javagame.game.model.TextSequence;
+import de.davidtobi.javagame.game.textsequence.listener.TextSequenceListener;
+import de.davidtobi.javagame.game.textsequence.model.TextSequence;
 import de.davidtobi.javagame.game.world.Level;
 import de.davidtobi.javagame.game.world.LevelBlock;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
-public class LevelScene extends Scene {
+public class LevelScene extends BaseGameScene {
 
     private final Level level;
 
     private final Camera camera;
     private final Entity player, roboter;
 
-    private Entity textbox;
-    private Entity textboxText;
-    private Entity textboxNarrator;
-
     private Entity collidingEntity;
-
-    private boolean inTextSequence = false;
-    private TextSequence currentTextSequence;
 
     public LevelScene(Level level) {
         super("scene_level");
@@ -115,52 +101,11 @@ public class LevelScene extends Scene {
             decorationCounter++;
         }
 
-        textboxNarrator = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080) + 100, dimensionHelper.getCenteredY(608) + 450, 10),
-                new UISizeComponent(1080, 608),
-                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.CENTER, VerticalAlignment.TOP, new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        if(currentTextSequence == null) {
-                            return "";
-                        }
-                        return currentTextSequence.getTextSequences().getNarrator();
-                    }
-                })
-        ));
-        textboxNarrator.setDisabled(true);
-        addEntity(textboxNarrator);
-
-        textboxText = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(900), dimensionHelper.getCenteredY(608) + 510, 10),
-                new UISizeComponent(900, 608),
-                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 20), HorizontalAlignment.LEFT, VerticalAlignment.TOP, new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        if(currentTextSequence == null) {
-                            return "";
-                        }
-                        return currentTextSequence.getCurrentSequence();
-                    }
-                })
-        ));
-        textboxText.setDisabled(true);
-        addEntity(textboxText);
-
-        textbox = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080), 450, 0),
-                new UISizeComponent(1080, 608),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/textbox1.png", Texture.class))
-        ));
-        textbox.setDisabled(true);
-        addEntity(textbox);
-
 
 
         openTextSequence(new TextSequence(TextSequences.INTRO));
 
         addListener(new PlayerMovementListener(camera, player, this));
-        addListener(new TextSequenceListener(this));
         addListener(new EntityCollisionListener(this));
         addListener(new InteractListener(this));
     }
@@ -170,30 +115,8 @@ public class LevelScene extends Scene {
         camera.update(player);
     }
 
-    public boolean isInTextSequence() {
-        return inTextSequence;
-    }
-
     public TextSequence getCurrentTextSequence() {
         return currentTextSequence;
-    }
-
-    public void openTextSequence(TextSequence textSequence) {
-        this.inTextSequence = true;
-        this.currentTextSequence = textSequence;
-
-        textbox.setDisabled(false);
-        textboxText.setDisabled(false);
-        textboxNarrator.setDisabled(false);
-    }
-
-    public void closeTextSequence() {
-        this.inTextSequence = false;
-        this.currentTextSequence = null;
-
-        textbox.setDisabled(true);
-        textboxText.setDisabled(true);
-        textboxNarrator.setDisabled(true);
     }
 
     public Entity getPlayer() {
