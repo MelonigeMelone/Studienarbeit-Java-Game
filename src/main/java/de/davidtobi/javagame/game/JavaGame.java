@@ -4,6 +4,7 @@ import de.davidtobi.javagame.engine.AbstractGame;
 import de.davidtobi.javagame.engine.core.GameSettings;
 import de.davidtobi.javagame.engine.log.EngineLoggerLevel;
 import de.davidtobi.javagame.engine.scene.Scene;
+import de.davidtobi.javagame.game.codingtask.CodingTasks;
 import de.davidtobi.javagame.game.scene.CodingScene;
 import de.davidtobi.javagame.game.scene.LevelScene;
 import de.davidtobi.javagame.game.world.Level;
@@ -117,7 +118,7 @@ public class JavaGame extends AbstractGame {
                     add(new LevelBlock(18, 7, LevelBlockType.GATE, true, new Supplier<Scene>() {
                         @Override
                         public Scene get() {
-                            return new CodingScene();
+                            return new CodingScene(CodingTasks.GATE_1);
                         }
                     }));
                     add(new LevelBlock(19, 7, LevelBlockType.ROCK, true));

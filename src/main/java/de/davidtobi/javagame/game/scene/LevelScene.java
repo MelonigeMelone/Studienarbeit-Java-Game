@@ -8,7 +8,9 @@ import de.davidtobi.javagame.engine.ecs.model.Component;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.renderersystem.EntityRendererSystem;
 import de.davidtobi.javagame.engine.ecs.renderersystem.UIEntityRendererSystem;
+import de.davidtobi.javagame.engine.ecs.system.FollowEntitySystem;
 import de.davidtobi.javagame.engine.ecs.system.MovementSystem;
+import de.davidtobi.javagame.engine.math.model.Vector2D;
 import de.davidtobi.javagame.engine.resource.model.Texture;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
 import de.davidtobi.javagame.game.textsequence.data.TextSequences;
@@ -45,6 +47,7 @@ public class LevelScene extends BaseGameScene {
 
         addRendererSystem(new EntityRendererSystem(camera));
         addRendererSystem(new UIEntityRendererSystem());
+        addSystem(new FollowEntitySystem());
 
         addSystem(new MovementSystem());
 
@@ -63,7 +66,7 @@ public class LevelScene extends BaseGameScene {
                 new SizeComponent((int) (level.getScale() * 0.6), (int) (level.getScale() * 0.6)),
                 new SpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/roboterSpriteSheet.png", Texture.class), 32, 32),
                 new RotationComponent(0),
-                new VelocityComponent(0,0,0))
+                new FollowEntityComponent(player, new Vector2D(15, 15)))
         );
 
         addEntity(roboter);

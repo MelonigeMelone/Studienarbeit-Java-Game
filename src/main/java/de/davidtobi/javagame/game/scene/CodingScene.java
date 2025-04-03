@@ -7,14 +7,18 @@ import de.davidtobi.javagame.engine.data.VerticalAlignment;
 import de.davidtobi.javagame.engine.ecs.component.ui.*;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.renderersystem.UIEntityRendererSystem;
+import de.davidtobi.javagame.engine.ecs.system.ui.UIClickSystem;
 import de.davidtobi.javagame.engine.event.event.input.KeyReleasedEvent;
 import de.davidtobi.javagame.engine.event.event.input.MouseReleasedEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
+import de.davidtobi.javagame.engine.log.EngineLogger;
+import de.davidtobi.javagame.engine.log.EngineLoggerLevel;
 import de.davidtobi.javagame.engine.resource.model.Texture;
-import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
-import de.davidtobi.javagame.game.textsequence.data.TextSequences;
+import de.davidtobi.javagame.game.codingtask.CodingTaskClass;
+import de.davidtobi.javagame.game.codingtask.CodingTaskHelpSequenceType;
+import de.davidtobi.javagame.game.codingtask.CodingTasks;
 import de.davidtobi.javagame.game.textsequence.model.TextSequence;
 import de.davidtobi.javagame.game.util.JavaCompilerUtil;
 
@@ -28,27 +32,30 @@ import java.util.function.Supplier;
 
 public class CodingScene extends BaseGameScene implements Listener {
 
+    private final CodingTasks codingTasks;
+    private CodingTaskClass selectedCodingTaskClass;
+
     private int cursorIndex;
     private boolean cursorVisible;
     private Timer cursorTimer;
 
     private final Entity codingBox;
 
-    private String code = "public class Gate {\n" +
-            "    public static void main(String[] args) {\n" +
-            "        boolean isGateOpen = false;\n" +
-            "        setGateStatus(isGateOpen);\n" +
-            "    }\n" +
-            "}\n";
+    private String code;
 
-    public CodingScene() {
+    public CodingScene(CodingTasks codingTasks) {
         super("scene_coding");
+
+        this.codingTasks = codingTasks;
+        this.selectedCodingTaskClass = codingTasks.getCodingTask().getCodingTaskClasses()[0];
+        this.code = selectedCodingTaskClass.getCurrentCode();
 
         initCursor();
 
         DimensionHelper dimensionHelper = GameEngine.getDimensionHelper();
 
         addRendererSystem(new UIEntityRendererSystem());
+        addSystem(new UIClickSystem());
         addListener(this);
 
         addEntity(new Entity("UI", List.of(
@@ -83,6 +90,19 @@ public class CodingScene extends BaseGameScene implements Listener {
                     public String get() {
                         return "Compile";
                     }
+                }),
+                new UIClickableComponent(() -> {
+                   this.selectedCodingTaskClass.setCurrentCode(code);
+
+
+                   boolean compiledSuccessfully = false;
+                   try {
+                       compiledSuccessfully = codingTasks.getCodingTask().compiledSuccessfully();
+                 } catch (Exception exception) {
+                      EngineLogger.log(EngineLoggerLevel.ERROR, "Error while compiling: " + exception.getMessage());
+                   }
+
+                    EngineLogger.log(EngineLoggerLevel.INFORMATION, "Compile Status " + compiledSuccessfully);
                 })
         )));
 
@@ -104,11 +124,11 @@ public class CodingScene extends BaseGameScene implements Listener {
         cursorVisible = true;
         cursorTimer = new Timer(500, e -> {
             cursorVisible = !cursorVisible;
-            // Trigger a repaint or update the UI to reflect the cursor visibility change
         });
         cursorTimer.start();
 
-        openTextSequence(new TextSequence(TextSequences.LEVEL_1_BOOLEAN));
+        openTextSequence(new TextSequence(codingTasks.getCodingTask().getHelpTextSequences()
+                .get(CodingTaskHelpSequenceType.INITIAL)));
     }
 
     @Override
@@ -203,7 +223,6 @@ public class CodingScene extends BaseGameScene implements Listener {
         }
     }
 
-    // Helper method to check if a character is an allowed symbol
     private boolean isAllowedSymbol(char c) {
         return "!@#$%^&*()-_=+{}[];:'\",.<>?/\\|".indexOf(c) >= 0;
     }

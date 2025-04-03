@@ -3,6 +3,7 @@ package de.davidtobi.javagame.game.scene;
 import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.data.HorizontalAlignment;
 import de.davidtobi.javagame.engine.data.VerticalAlignment;
+import de.davidtobi.javagame.engine.ecs.component.TextureComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UILabelComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UIPositionComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UISizeComponent;
@@ -62,12 +63,20 @@ public abstract class BaseGameScene extends Scene {
                         if (currentTextSequence == null) {
                             return "";
                         }
-                        return currentTextSequence.getCurrentMessage().getNarrator();
+                        return currentTextSequence.getCurrentMessage().getNarrator().getName();
                     }
                 })
         ));
         sequenceNarrator.setDisabled(true);
         addEntity(sequenceNarrator);
+
+        sequenceNarratorImage = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(50) , dimensionHelper.getCenteredY(50), 21),
+                new UISizeComponent(50, 50),
+                new TextureComponent(null)
+        ));
+        sequenceNarratorImage.setDisabled(true);
+        addEntity(sequenceNarratorImage);
 
         addListener(new TextSequenceListener(this));
     }
@@ -80,7 +89,9 @@ public abstract class BaseGameScene extends Scene {
         sequenceTextbox.setDisabled(false);
         sequenceContent.setDisabled(false);
         sequenceNarrator.setDisabled(false);
-        //sequenceNarratorImage.setDisabled(false);
+        sequenceNarratorImage.setDisabled(false);
+        sequenceNarratorImage.getComponent(TextureComponent.class).setTexture(
+                GameEngine.getResourceController().loadResource(textSequence.getCurrentMessage().getNarrator().getTexturePath(), Texture.class));
     }
 
     public void closeTextSequence() {
@@ -90,7 +101,7 @@ public abstract class BaseGameScene extends Scene {
         sequenceTextbox.setDisabled(true);
         sequenceContent.setDisabled(true);
         sequenceNarrator.setDisabled(true);
-        //sequenceNarratorImage.setDisabled(true);
+        sequenceNarratorImage.setDisabled(true);
     }
 
     public boolean isInTextSequence() {

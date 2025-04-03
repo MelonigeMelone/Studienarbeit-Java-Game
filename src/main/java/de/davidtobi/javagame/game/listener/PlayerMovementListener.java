@@ -50,17 +50,6 @@ public class PlayerMovementListener implements Listener {
         }
 
         camera.update(player);
-        syncRoboter();
-    }
 
-    private void syncRoboter() {
-        VelocityComponent velocityComponent = player.getComponent(VelocityComponent.class);
-        RotationComponent rotationComponent = player.getComponent(RotationComponent.class);
-
-        VelocityComponent roboterVelocityComponent = levelScene.getRoboter().getComponent(VelocityComponent.class);
-        RotationComponent roboterRotationComponent = levelScene.getRoboter().getComponent(RotationComponent.class);
-
-        roboterVelocityComponent.set(velocityComponent.getVx(), velocityComponent.getVy(), velocityComponent.getVz());
-        roboterRotationComponent.setRotation(rotationComponent.getRotation());
     }
 }

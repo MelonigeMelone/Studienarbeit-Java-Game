@@ -16,8 +16,8 @@ public class InputHandler extends JPanel implements KeyListener, MouseListener, 
     private final Vector2D mousePosition = new Vector2D(0, 0);
     private boolean mousePressed = false;
 
-    private final float cursorOffsetX = 8;
-    private final float cursorOffsetY = 8;
+    private final float cursorOffsetX = 10;
+    private final float cursorOffsetY = 10;
 
     private final EventHandler eventHandler;
 
