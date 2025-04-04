@@ -9,6 +9,9 @@ import java.io.FileWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JavaCompilerUtil {
 
@@ -31,11 +34,26 @@ public class JavaCompilerUtil {
         try (FileWriter writer = new FileWriter(sourceFile)) {
             writer.write(code);
         }
-
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         compiler.run(null, null, null, sourceFile.getPath());
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(".").toURI().toURL()});
         return Class.forName(className, true, classLoader);
+    }
+
+    public static Class<?> compileAndLoad(Map<String, String> classCodeMap, String mainClassName) throws Exception {
+        for (Map.Entry<String, String> entry : classCodeMap.entrySet()) {
+            File sourceFile = new File(entry.getKey() + ".java");
+            try (FileWriter writer = new FileWriter(sourceFile)) {
+                writer.write(entry.getValue());
+            }
+        }
+
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        compiler.run(null, null, null, classCodeMap.keySet().stream()
+                .map(className -> className + ".java").toArray(String[]::new));
+
+        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(".").toURI().toURL()});
+        return Class.forName(mainClassName, true, classLoader);
     }
 }

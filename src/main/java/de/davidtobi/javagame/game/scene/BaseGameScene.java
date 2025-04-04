@@ -3,7 +3,6 @@ package de.davidtobi.javagame.game.scene;
 import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.data.HorizontalAlignment;
 import de.davidtobi.javagame.engine.data.VerticalAlignment;
-import de.davidtobi.javagame.engine.ecs.component.TextureComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UILabelComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UIPositionComponent;
 import de.davidtobi.javagame.engine.ecs.component.ui.UISizeComponent;
@@ -31,23 +30,24 @@ public abstract class BaseGameScene extends Scene {
         super(name);
 
         sequenceTextbox = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080), 450, 20),
-                new UISizeComponent(1080, 608),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/textbox1.png", Texture.class))
+                new UIPositionComponent(dimensionHelper.getCenteredX(1440), dimensionHelper.getCenteredY(810) + 450, 20),
+                new UISizeComponent(1440, 810),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/textbox.png", Texture.class))
         ));
         sequenceTextbox.setDisabled(true);
         addEntity(sequenceTextbox);
 
         sequenceContent = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(900), dimensionHelper.getCenteredY(608) + 510, 21),
-                new UISizeComponent(900, 608),
-                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 20), HorizontalAlignment.LEFT, VerticalAlignment.TOP, new Supplier<String>() {
+                new UIPositionComponent(dimensionHelper.getCenteredX(850) + 175, dimensionHelper.getCenteredY(608) + 685, 21),
+                new UISizeComponent(850, 608),
+                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.LEFT, VerticalAlignment.TOP, new Supplier<String>() {
                     @Override
                     public String get() {
                         if (currentTextSequence == null) {
                             return "";
                         }
-                        return currentTextSequence.getCurrentMessage().getMessage();
+                        currentTextSequence.getCurrentMessage().tickCurrentDisplayedMessage();
+                        return currentTextSequence.getCurrentMessage().getCurrentDisplayedMessage();
                     }
                 })
         ));
@@ -55,9 +55,9 @@ public abstract class BaseGameScene extends Scene {
         addEntity(sequenceContent);
 
         sequenceNarrator = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080) + 200, dimensionHelper.getCenteredY(608) + 450, 21),
+                new UIPositionComponent(dimensionHelper.getCenteredX(1080) + 250, dimensionHelper.getCenteredY(608) + 600, 21),
                 new UISizeComponent(1080, 608),
-                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.CENTER, VerticalAlignment.TOP, new Supplier<String>() {
+                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 45), HorizontalAlignment.LEFT, VerticalAlignment.TOP, new Supplier<String>() {
                     @Override
                     public String get() {
                         if (currentTextSequence == null) {
@@ -71,9 +71,9 @@ public abstract class BaseGameScene extends Scene {
         addEntity(sequenceNarrator);
 
         sequenceNarratorImage = new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(50) , dimensionHelper.getCenteredY(50), 21),
-                new UISizeComponent(50, 50),
-                new TextureComponent(null)
+                new UIPositionComponent(dimensionHelper.getCenteredX(125) - 475 , dimensionHelper.getCenteredY(125) + 415, 21),
+                new UISizeComponent(150, 150),
+                new UITextureComponent(null)
         ));
         sequenceNarratorImage.setDisabled(true);
         addEntity(sequenceNarratorImage);
@@ -90,7 +90,7 @@ public abstract class BaseGameScene extends Scene {
         sequenceContent.setDisabled(false);
         sequenceNarrator.setDisabled(false);
         sequenceNarratorImage.setDisabled(false);
-        sequenceNarratorImage.getComponent(TextureComponent.class).setTexture(
+        sequenceNarratorImage.getComponent(UITextureComponent.class).setTexture(
                 GameEngine.getResourceController().loadResource(textSequence.getCurrentMessage().getNarrator().getTexturePath(), Texture.class));
     }
 

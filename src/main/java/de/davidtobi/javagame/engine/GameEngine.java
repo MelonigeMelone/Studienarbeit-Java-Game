@@ -71,7 +71,7 @@ public class GameEngine {
         entityController = new EntityController(systemController);
         sceneController = new SceneController(eventHandler, entityController, systemController);
 
-        Dimension defaultDimension = new Dimension(1080, 720);
+        Dimension defaultDimension = new Dimension(1920, 1080);
         dimensionHelper = new DimensionHelper(defaultDimension);
         gameWindow = new GameWindow(game.getName(), inputHandler, systemController, dimensionHelper);
     }

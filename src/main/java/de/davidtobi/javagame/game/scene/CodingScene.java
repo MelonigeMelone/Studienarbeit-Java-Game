@@ -8,6 +8,7 @@ import de.davidtobi.javagame.engine.ecs.component.ui.*;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.renderersystem.UIEntityRendererSystem;
 import de.davidtobi.javagame.engine.ecs.system.ui.UIClickSystem;
+import de.davidtobi.javagame.engine.ecs.system.ui.UIHoverSystem;
 import de.davidtobi.javagame.engine.event.event.input.KeyReleasedEvent;
 import de.davidtobi.javagame.engine.event.event.input.MouseReleasedEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
@@ -56,66 +57,89 @@ public class CodingScene extends BaseGameScene implements Listener {
 
         addRendererSystem(new UIEntityRendererSystem());
         addSystem(new UIClickSystem());
+        addSystem(new UIHoverSystem());
         addListener(this);
 
         addEntity(new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080), dimensionHelper.getCenteredY(1920), 0),
-                new UISizeComponent(1080, 1920),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingBackground.png", Texture.class))
+                new UIPositionComponent(dimensionHelper.getCenteredX(1920), dimensionHelper.getCenteredY(1080), 0),
+                new UISizeComponent(1920, 1080),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/background.png", Texture.class))
         )));
+
+        int classCounter = 0;
+        for(CodingTaskClass codingTaskClass : codingTasks.getCodingTask().getCodingTaskClasses()) {
+
+            addEntity(new Entity("UI", List.of(
+                    new UIPositionComponent(dimensionHelper.getCenteredX(313) - 485 + (classCounter * 400), dimensionHelper.getCenteredY(40) - 395, 1),
+                    new UISizeComponent(400, 70),
+                    new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/classTab.png", Texture.class)),
+                    new UIHoverComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/classTab_hover.png", Texture.class)),
+                    new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.CENTER, VerticalAlignment.CENTER, new Supplier<String>() {
+                        @Override
+                        public String get() {
+                            return codingTaskClass.getClassName() + ".java";
+                        }
+                    }),
+                    new UIClickableComponent(() -> {
+                        if(inTextSequence) {
+                            return;
+                        }
+                        this.selectedCodingTaskClass = codingTaskClass;
+                        this.code = codingTaskClass.getCurrentCode();
+                        initCursor();
+                    })
+            )));
+            classCounter++;
+        }
+
 
         addEntity(new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080), dimensionHelper.getCenteredY(608), 1),
-                new UISizeComponent(1080, 608),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/textbox1.png", Texture.class))
-        )));
-
-        addEntity(new Entity("UI", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(900) + 150, dimensionHelper.getCenteredY(608) + 50, 10),
-                new UISizeComponent(900, 608),
-                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.CENTER, VerticalAlignment.TOP, new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        return "Gate.java";
-                    }
-                })
-        )));
-
-        addEntity(new Entity("CompileButton", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(108) + 325, dimensionHelper.getCenteredY(60) + 225, 2),
-                new UISizeComponent(190, 45),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/buttonGreen.png", Texture.class)),
-                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 30), HorizontalAlignment.CENTER, VerticalAlignment.TOP, new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        return "Compile";
-                    }
-                }),
+                new UIPositionComponent(dimensionHelper.getCenteredX(50) - 550, dimensionHelper.getCenteredY(50) - 450, 1),
+                new UISizeComponent(40, 40),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/compileButton.png", Texture.class)),
+                new UIHoverComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/compileButton_hover.png", Texture.class)),
                 new UIClickableComponent(() -> {
-                   this.selectedCodingTaskClass.setCurrentCode(code);
+                    if(inTextSequence) {
+                        return;
+                    }
+                    this.selectedCodingTaskClass.setCurrentCode(code);
 
 
-                   boolean compiledSuccessfully = false;
-                   try {
-                       compiledSuccessfully = codingTasks.getCodingTask().compiledSuccessfully();
-                 } catch (Exception exception) {
-                      EngineLogger.log(EngineLoggerLevel.ERROR, "Error while compiling: " + exception.getMessage());
-                   }
+                    boolean compiledSuccessfully = false;
+                    try {
+                        compiledSuccessfully = codingTasks.getCodingTask().compiledSuccessfully();
+                    } catch (Exception exception) {
+                        EngineLogger.log(EngineLoggerLevel.ERROR, "Error while compiling: " + exception.getMessage());
+                    }
 
                     EngineLogger.log(EngineLoggerLevel.INFORMATION, "Compile Status " + compiledSuccessfully);
+                    openTextSequence(new TextSequence(
+                            compiledSuccessfully ? codingTasks.getCodingTask().getHelpTextSequences()
+                                    .get(CodingTaskHelpSequenceType.TASK_FINISH) : codingTasks.getCodingTask().getHelpTextSequences()
+                                    .get(CodingTaskHelpSequenceType.TASK_FAILED)
+                    ));
                 })
         )));
 
-        addEntity(new Entity("HelpButton", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(108) + 425, dimensionHelper.getCenteredY(60) - 175, 2),
-                new UISizeComponent(50, 50),
-                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/helpIcon.png", Texture.class))
+        addEntity(new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(50) - 500, dimensionHelper.getCenteredY(50) - 450, 1),
+                new UISizeComponent(40, 40),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/resetButton.png", Texture.class)),
+                new UIHoverComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/resetButton_hover.png", Texture.class)),
+                new UIClickableComponent(() -> {
+                    if(inTextSequence) {
+                        return;
+                    }
+
+                    this.selectedCodingTaskClass.setCurrentCode(selectedCodingTaskClass.buildClassCode());
+                    this.code = selectedCodingTaskClass.getCurrentCode();
+                })
         )));
 
         codingBox = new Entity("CodingBox", List.of(
-                new UIPositionComponent(dimensionHelper.getCenteredX(1080) + 100, dimensionHelper.getCenteredY(608) + 125, 2),
+                new UIPositionComponent(dimensionHelper.getCenteredX(1080) - 350, dimensionHelper.getCenteredY(608), 2),
                 new UISizeComponent(1080, 608),
-                new UICodingComponent(Color.BLACK, new Font("Arial", Font.PLAIN, 18),
+                new UICodingComponent(Color.BLACK, new Font("Arial", Font.PLAIN, 25),
                         HorizontalAlignment.LEFT, VerticalAlignment.TOP, SyntaxHighlighter.JAVA, this::getCodeWithCursor
                 )
         ));
@@ -127,8 +151,10 @@ public class CodingScene extends BaseGameScene implements Listener {
         });
         cursorTimer.start();
 
-        openTextSequence(new TextSequence(codingTasks.getCodingTask().getHelpTextSequences()
-                .get(CodingTaskHelpSequenceType.INITIAL)));
+        if(codingTasks.getCodingTask().hasHelpTextSequences()) {
+            openTextSequence(new TextSequence(codingTasks.getCodingTask().getHelpTextSequences()
+                    .get(CodingTaskHelpSequenceType.INITIAL)));
+        }
     }
 
     @Override
@@ -188,6 +214,10 @@ public class CodingScene extends BaseGameScene implements Listener {
 
     @EventHandler
     public void onMouseClicked(MouseReleasedEvent event) {
+        if(inTextSequence) {
+            return;
+        }
+
         updateCursorPosition(event.getPosition().getX(), event.getPosition().getY());
     }
 
@@ -219,7 +249,10 @@ public class CodingScene extends BaseGameScene implements Listener {
                 return;
             }
             y += lineHeight;
-            cursorIndex += line.length() + 1; // +1 for the newline character
+            cursorIndex += line.length() + 1;
+        }
+        if(cursorIndex > code.length()) {
+            cursorIndex = code.length();
         }
     }
 

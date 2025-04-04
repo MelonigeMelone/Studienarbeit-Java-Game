@@ -26,6 +26,10 @@ public abstract class CodingTask {
         return codingTaskClasses;
     }
 
+    public boolean hasHelpTextSequences() {
+        return !helpTextSequences.isEmpty();
+    }
+
     public HashMap<CodingTaskHelpSequenceType, TextSequences> getHelpTextSequences() {
         return helpTextSequences;
     }

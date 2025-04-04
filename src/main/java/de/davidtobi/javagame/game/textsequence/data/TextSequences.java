@@ -10,6 +10,16 @@ public enum TextSequences {
             "Um zu überleben, musst du die Sprache der Maschinen verstehen. Code ist ihre Waffe – und jetzt auch deine. Gemeinsam mit deinem mechanischen Begleiter wirst du lernen, die digitalen Strukturen zu manipulieren, Systeme zu überlisten und die Wahrheit hinter der Rebellion aufzudecken. Doch sei gewarnt: Jede Entscheidung wird Konsequenzen haben.",
             "Bist du bereit, die Kontrolle zurückzugewinnen? Die Zukunft liegt in deinen Händen."
     }),
+    TEST_CODE(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "In diesem Beispiel werden nur Funktionalitäten getestet",
+            "Das ist eine zweite Test Nachricht."
+    }),
+    TEST_CODE_FINISH(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Sehr gut! Du hast die Aufgabe erfolgreich gelöst",
+    }),
+    TEST_CODE_FAIL(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Hm das scheint noch nicht richtig zu sein. Du musst die Zeichenkette anpassen, sodass mein Name dort steht."
+    }),
     GATE_1_INITIAL(TextNarrator.ROBOTER_FRIEND, new String[] {
             "In diesem Beispiel geht es darum, den Status eines 'Tors' zu überprüfen und zu setzen. Lassen Sie uns den Code Schritt für Schritt durchgehen.",
             "1. 'boolean isGateOpen = false;' Hier deklarieren wir eine Variable vom Typ 'boolean' mit dem Namen 'isGateOpen'. Ein 'boolean' kann nur zwei Werte haben: 'true' (wahr) oder 'false' (falsch). In diesem Fall setzen wir den Wert der Variable auf 'false', was bedeutet, dass das Tor anfangs geschlossen ist.",

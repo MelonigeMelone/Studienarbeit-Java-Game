@@ -2,7 +2,7 @@ package de.davidtobi.javagame.game.textsequence.data;
 
 public enum TextNarrator {
     NARRATOR("Erzähler", null),
-    ROBOTER_FRIEND("Freundlicher Roboter", "/img/roboterNarrator.png")
+    ROBOTER_FRIEND("Ideo", "/img/narrator/ideo.png")
     ;
 
     private final String name;

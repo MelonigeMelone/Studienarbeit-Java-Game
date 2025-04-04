@@ -34,8 +34,8 @@ public class JavaGame extends AbstractGame {
 
     @Override
     public Scene getStartScene() {
-        //return new CodingScene();
-        return new LevelScene(new Level(
+        return new CodingScene(CodingTasks.TEST_FUNCTIONALITY);
+        /*return new LevelScene(new Level(
                 50,
                 20,
                 15,
@@ -149,6 +149,6 @@ public class JavaGame extends AbstractGame {
                         add(levelBlock);
                     }
                 }}
-        ));
+        ));*/
     }
 }

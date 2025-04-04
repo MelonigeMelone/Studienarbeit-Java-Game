@@ -21,6 +21,11 @@ public class TextSequenceListener implements Listener {
             return;
         }
 
+        if(!baseGameScene.getCurrentTextSequence().getCurrentMessage().isCurrentDisplayedMessageFinished()) {
+            baseGameScene.getCurrentTextSequence().getCurrentMessage().finishCurrentDisplayedMessage();
+            return;
+        }
+
         if(!baseGameScene.getCurrentTextSequence().hasNextSequence()) {
             baseGameScene.closeTextSequence();
             return;
