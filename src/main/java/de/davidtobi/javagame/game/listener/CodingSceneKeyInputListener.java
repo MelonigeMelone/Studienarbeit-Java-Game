@@ -12,14 +12,24 @@ import java.awt.event.KeyEvent;
 public class CodingSceneKeyInputListener implements Listener {
 
     private final CodingScene codingScene;
+    private boolean isShiftPressed = false;
 
     public CodingSceneKeyInputListener(CodingScene codingScene) {
         this.codingScene = codingScene;
     }
 
     @EventHandler
+    public void onKeyPressed(KeyPressedEvent event) {
+        if (event.getKeyCode() == KeyEvent.VK_SHIFT) {
+            isShiftPressed = true;
+        } else {
+            isShiftPressed = false;
+        }
+    }
+
+    @EventHandler
     public void onKeyReleased(KeyPressedEvent event) {
-        if(codingScene.isInTextSequence()) {
+        if (codingScene.isInTextSequence()) {
             return;
         }
 
@@ -29,35 +39,35 @@ public class CodingSceneKeyInputListener implements Listener {
         String code = codingScene.getCode();
         int cursorIndex = codingScene.getCursorIndex();
 
-        if (keyCode == KeyEvent.VK_BACK_SPACE && cursorIndex > 0) {
-            // Remove character before the cursor
+        if (keyCode == KeyEvent.VK_SHIFT) {
+            isShiftPressed = false;
+        } else if (Character.isLetter(keyChar)) {
+            // Insert uppercase letter if Shift is pressed
+            if (isShiftPressed) {
+                keyChar = Character.toUpperCase(keyChar);
+            }
+            code = code.substring(0, cursorIndex) + keyChar + code.substring(cursorIndex);
+            cursorIndex++;
+        } else if (keyCode == KeyEvent.VK_BACK_SPACE && cursorIndex > 0) {
             code = code.substring(0, cursorIndex - 1) + code.substring(cursorIndex);
             cursorIndex--;
         } else if (keyCode == KeyEvent.VK_DELETE && cursorIndex < code.length()) {
-            // Remove character at the cursor
             code = code.substring(0, cursorIndex) + code.substring(cursorIndex + 1);
         } else if (keyCode == KeyEvent.VK_ENTER) {
-            // Add newline at the cursor
             code = code.substring(0, cursorIndex) + "\n" + code.substring(cursorIndex);
             cursorIndex++;
         } else if (keyCode == KeyEvent.VK_SPACE) {
-            // Add space at the cursor
             code = code.substring(0, cursorIndex) + " " + code.substring(cursorIndex);
             cursorIndex++;
         } else if (keyCode == KeyEvent.VK_LEFT) {
-            // Move cursor left
             cursorIndex = Math.max(0, cursorIndex - 1);
         } else if (keyCode == KeyEvent.VK_RIGHT) {
-            // Move cursor right
             cursorIndex = Math.min(code.length(), cursorIndex + 1);
         } else if (keyCode == KeyEvent.VK_UP) {
-            // Move cursor up
             cursorIndex = moveCursorUp(code, cursorIndex);
         } else if (keyCode == KeyEvent.VK_DOWN) {
-            // Move cursor down
             cursorIndex = moveCursorDown(code, cursorIndex);
-        } else if (Character.isLowerCase(keyChar) || Character.isDigit(keyChar) || isAllowedSymbol(keyChar)) {
-            // Insert character at the cursor
+        } else if (Character.isDigit(keyChar) || isAllowedSymbol(keyChar)) {
             code = code.substring(0, cursorIndex) + keyChar + code.substring(cursorIndex);
             cursorIndex++;
         }

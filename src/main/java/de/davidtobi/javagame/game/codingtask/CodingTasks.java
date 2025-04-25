@@ -14,7 +14,7 @@ public enum CodingTasks {
                     new CodingTaskClass("Main",
                             """
                                         public static void main(String[] args) {
-                                           //TODO Write MEssage
+                                           //TODO Write Message
                                         }
                                     
                                     """,
@@ -23,10 +23,17 @@ public enum CodingTasks {
             },
             new HashMap<>() {{
                 put(CodingTaskHelpSequenceType.INITIAL, TextSequences.HELLO_WORLD);
+                put(CodingTaskHelpSequenceType.TASK_FINISH, TextSequences.HELLO_WORLD_FINISH);
+                put(CodingTaskHelpSequenceType.TASK_FAILED, TextSequences.HELLO_WORLD_FAILED);
             }}) {
         @Override
         public boolean compiledSuccessfully() throws Exception {
-            return false;
+            // Compile the code dynamically
+            CodingTaskClass codingTaskClass = getCodingTaskClasses()[0];
+            boolean compiled = JavaCompilerUtil.isValidJavaCode(codingTaskClass.getClassName(), codingTaskClass.getCurrentCode());
+
+            return compiled && codingTaskClass.getCurrentCode().contains("System.out.println") &&
+                    codingTaskClass.getCurrentCode().contains("Hallo Familie, wir sind gut angekommen");
         }
     }),
     TEST_FUNCTIONALITY(new CodingTask("test_functionality", "",

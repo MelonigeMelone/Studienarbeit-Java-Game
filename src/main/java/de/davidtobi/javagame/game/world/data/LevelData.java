@@ -1,8 +1,10 @@
 package de.davidtobi.javagame.game.world.data;
 
+import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.game.codingtask.CodingTasks;
 import de.davidtobi.javagame.game.scene.CodingScene;
+import de.davidtobi.javagame.game.scene.LevelScene;
 import de.davidtobi.javagame.game.textsequence.data.TextSequences;
 import de.davidtobi.javagame.game.world.Level;
 import de.davidtobi.javagame.game.world.LevelBlock;
@@ -65,7 +67,7 @@ public enum LevelData {
                 add(new LevelBlock(32, 264, LevelBlockData.BUILDING_WALL, true));
 
                 add(new LevelBlock(35, 250, LevelBlockData.COMPUTER, true,
-                        () -> new CodingScene(CodingTasks.HELLO_WORLD)));
+                        () -> new CodingScene(CodingTasks.HELLO_WORLD, GameEngine.getSceneController().getCurrentScene())));
             }}));
 
 

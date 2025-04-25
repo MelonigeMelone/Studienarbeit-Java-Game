@@ -24,6 +24,20 @@ public enum TextSequences {
             "Das ist alles, was du tun musst, um die Nachricht auszugeben.",
     }),
 
+    HELLO_WORLD_FINISH(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Gut gemacht! Du hast die Nachricht erfolgreich ausgegeben.",
+            "Jetzt weiß deine Familie, dass du gut angekommen bist.",
+            "Das ist ein wichtiger Schritt, um deine Programmierfähigkeiten zu verbessern.",
+            "Lass uns weitermachen und noch mehr lernen, gehe die Treppe nach oben",
+    }),
+
+    HELLO_WORLD_FAILED(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Das scheint nicht richtig zu sein. Du musst die Nachricht anpassen, damit sie korrekt ausgegeben wird.",
+            "Überprüfe deinen Code und stelle sicher, dass du die System.out.println() Methode richtig verwendest.",
+            "Vergiss nicht, den Text in Anführungszeichen zu setzen und die Klammern richtig zu schließen.",
+            "Wenn du Hilfe brauchst, schau dir die Hinweise an oder frage mich.",
+    }),
+
 
     TEST_CODE(TextNarrator.ROBOTER_FRIEND, new String[] {
             "In diesem Beispiel werden nur Funktionalitäten getestet",

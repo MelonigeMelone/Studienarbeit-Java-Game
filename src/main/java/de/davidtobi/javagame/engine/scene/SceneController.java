@@ -74,4 +74,7 @@ public class SceneController {
         }
     }
 
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
 }

@@ -13,6 +13,7 @@ import de.davidtobi.javagame.engine.event.model.Listener;
 import de.davidtobi.javagame.engine.log.EngineLogger;
 import de.davidtobi.javagame.engine.log.EngineLoggerLevel;
 import de.davidtobi.javagame.engine.resource.model.Texture;
+import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
 import de.davidtobi.javagame.game.codingtask.CodingTaskClass;
 import de.davidtobi.javagame.game.codingtask.CodingTaskHelpSequenceType;
@@ -30,7 +31,10 @@ import java.util.function.Supplier;
 public class CodingScene extends BaseGameScene implements Listener {
 
     private final CodingTasks codingTasks;
+    private final Scene originalScene;
     private CodingTaskClass selectedCodingTaskClass;
+
+    private boolean compiledSuccessfully = false;
 
     private int cursorIndex;
     private boolean cursorVisible;
@@ -40,8 +44,9 @@ public class CodingScene extends BaseGameScene implements Listener {
 
     private String code;
 
-    public CodingScene(CodingTasks codingTasks) {
+    public CodingScene(CodingTasks codingTasks, Scene originalScene) {
         super("scene_coding");
+        this.originalScene = originalScene;
 
         this.codingTasks = codingTasks;
         this.selectedCodingTaskClass = codingTasks.getCodingTask().getCodingTaskClasses()[0];
@@ -60,6 +65,19 @@ public class CodingScene extends BaseGameScene implements Listener {
                 new UISizeComponent(1920, 1080),
                 new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/background.png", Texture.class))
         )));
+
+        addEntity(new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(1920), dimensionHelper.getCenteredY(1080), 0),
+                new UISizeComponent(1920, 1080),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/codingScene/tasksBackground.png", Texture.class))
+        )));
+
+        addEntity(new Entity("UI", List.of(
+                new UIPositionComponent(1575, -200, 0),
+                new UISizeComponent(275, 720),
+                new UILabelComponent("", Color.WHITE, new Font("Arial", Font.PLAIN, 25), HorizontalAlignment.CENTER, VerticalAlignment.CENTER,
+                        () -> codingTasks.getCodingTask().getMainTask())
+                )));
 
         int classCounter = 0;
         for(CodingTaskClass codingTaskClass : codingTasks.getCodingTask().getCodingTaskClasses()) {
@@ -99,7 +117,7 @@ public class CodingScene extends BaseGameScene implements Listener {
                     }
                     this.selectedCodingTaskClass.setCurrentCode(code);
 
-                    boolean compiledSuccessfully = false;
+                    compiledSuccessfully = false;
                     try {
                         compiledSuccessfully = codingTasks.getCodingTask().compiledSuccessfully();
                     } catch (Exception exception) {
@@ -157,6 +175,21 @@ public class CodingScene extends BaseGameScene implements Listener {
     @Override
     public void onEnter() {
 
+    }
+
+    @Override
+    public void closeTextSequence() {
+        this.inTextSequence = false;
+        this.currentTextSequence = null;
+
+        sequenceTextbox.setDisabled(true);
+        sequenceContent.setDisabled(true);
+        sequenceNarrator.setDisabled(true);
+        sequenceNarratorImage.setDisabled(true);
+
+        if(compiledSuccessfully) {
+            GameEngine.getSceneController().switchScene(originalScene);
+        }
     }
 
     public String getCode() {

@@ -37,8 +37,6 @@ public class EntityCollisionListener implements Listener {
 
         levelScene.setCollidingEntity(optionalEntity.orElse(null));
 
-        System.out.println(levelScene.getCollidingEntity());
-
         entityMoveEvent.setCancelled(optionalEntity.isPresent());
     }
 
