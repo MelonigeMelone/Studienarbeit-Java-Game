@@ -11,6 +11,12 @@ import java.io.InputStream;
 public class Texture implements Resource {
     private BufferedImage image;
 
+    public Texture() {}
+
+    public Texture(BufferedImage image) {
+        this.image = image;
+    }
+
     @Override
     public void load(String path) {
         try (InputStream is = getClass().getResourceAsStream(path)) {

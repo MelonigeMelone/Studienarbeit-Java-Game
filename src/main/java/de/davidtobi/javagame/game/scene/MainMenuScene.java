@@ -13,6 +13,7 @@ import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
 import de.davidtobi.javagame.game.codingtask.CodingTasks;
 import de.davidtobi.javagame.game.textsequence.data.TextSequences;
+import de.davidtobi.javagame.game.world.data.LevelData;
 
 import java.awt.*;
 import java.util.List;
@@ -50,7 +51,8 @@ public class MainMenuScene extends Scene {
                         HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
                 new UIClickableComponent(() -> {
                     TextSequences.reset();
-                    GameEngine.getSceneController().switchScene(new CodingScene(CodingTasks.TEST_FUNCTIONALITY));
+                    GameEngine.getSceneController().switchScene(new LevelScene(LevelData.START));
+                    //GameEngine.getSceneController().switchScene(new CodingScene(CodingTasks.TEST_FUNCTIONALITY));
                 })
         )));
 

@@ -37,10 +37,12 @@ public class EntityCollisionListener implements Listener {
 
         levelScene.setCollidingEntity(optionalEntity.orElse(null));
 
+        System.out.println(levelScene.getCollidingEntity());
+
         entityMoveEvent.setCancelled(optionalEntity.isPresent());
     }
 
-    public boolean collidesWithEntity(Entity entity, Entity target, Vector3D nextPosition) {
+    public boolean collidesWithEntityOld(Entity entity, Entity target, Vector3D nextPosition) {
         if(!(entity.hasComponent(PositionComponent.class) && entity.hasComponent(SizeComponent.class))) {
             return false;
         }
@@ -54,5 +56,40 @@ public class EntityCollisionListener implements Listener {
                 nextPosition.getX()  + sizeComponent.getWidth() > targetPositionComponent.getX() &&
                 nextPosition.getY() < targetPositionComponent.getY() + targetSizeComponent.getHeight() &&
                 nextPosition.getY() + sizeComponent.getHeight() > targetPositionComponent.getY();
+    }
+
+    public boolean collidesWithEntity(Entity entity, Entity target, Vector3D nextPosition) {
+        // Validate that both entities have the required components
+        if (!(entity.hasComponent(PositionComponent.class) && entity.hasComponent(SizeComponent.class)) ||
+                !(target.hasComponent(PositionComponent.class) && target.hasComponent(SizeComponent.class))) {
+            return false;
+        }
+
+        // Get the size and position of the moving entity
+        SizeComponent entitySize = entity.getComponent(SizeComponent.class);
+        double entityNextX = nextPosition.getX();
+        double entityNextY = nextPosition.getY();
+        double entityWidth = entitySize.getWidth();
+        double entityHeight = entitySize.getHeight();
+
+        // Get the size and position of the target entity
+        PositionComponent targetPosition = target.getComponent(PositionComponent.class);
+        SizeComponent targetSize = target.getComponent(SizeComponent.class);
+        double targetX = targetPosition.getX();
+        double targetY = targetPosition.getY();
+        double targetWidth = targetSize.getWidth();
+        double targetHeight = targetSize.getHeight();
+
+        // Adjust for potential offsets (e.g., tile size or sprite alignment)
+        double entityRight = entityNextX + entityWidth;
+        double entityBottom = entityNextY + entityHeight;
+        double targetRight = targetX + targetWidth;
+        double targetBottom = targetY + targetHeight;
+
+        // Check for overlap using AABB collision detection
+        return entityNextX < targetRight &&
+                entityRight > targetX &&
+                entityNextY < targetBottom &&
+                entityBottom > targetY;
     }
 }

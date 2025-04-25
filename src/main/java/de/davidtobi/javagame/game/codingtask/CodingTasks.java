@@ -9,7 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CodingTasks {
-    TEST_FUNCTIONALITY(new CodingTask("test_functionality",
+    HELLO_WORLD(new CodingTask("hello World","Sende die Nachricht 'Hallo Familie, wir sind gut angekommen' mithilfe von System.out.println() an die Konsole",
+            new CodingTaskClass[] {
+                    new CodingTaskClass("Main",
+                            """
+                                        public static void main(String[] args) {
+                                           //TODO Write MEssage
+                                        }
+                                    
+                                    """,
+                            """
+                            """)
+            },
+            new HashMap<>() {{
+                put(CodingTaskHelpSequenceType.INITIAL, TextSequences.HELLO_WORLD);
+            }}) {
+        @Override
+        public boolean compiledSuccessfully() throws Exception {
+            return false;
+        }
+    }),
+    TEST_FUNCTIONALITY(new CodingTask("test_functionality", "",
             new CodingTaskClass[]{
                     new CodingTaskClass("Main",
                             """
@@ -73,7 +93,7 @@ public enum CodingTasks {
     }
 
     ),
-    GATE_1(new CodingTask("gate_1",
+    GATE_1(new CodingTask("gate_1","",
             new CodingTaskClass[]{
                     new CodingTaskClass("Gate",
                             """

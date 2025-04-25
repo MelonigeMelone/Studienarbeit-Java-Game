@@ -7,11 +7,13 @@ import java.util.HashMap;
 public abstract class CodingTask {
 
     protected final String id;
+    protected final String mainTask;
     protected final CodingTaskClass[] codingTaskClasses;
     protected final HashMap<CodingTaskHelpSequenceType, TextSequences> helpTextSequences;
 
-    public CodingTask(String id, CodingTaskClass[] codingTaskClasses, HashMap<CodingTaskHelpSequenceType, TextSequences> helpTextSequences) {
+    public CodingTask(String id, String mainTask, CodingTaskClass[] codingTaskClasses, HashMap<CodingTaskHelpSequenceType, TextSequences> helpTextSequences) {
         this.id = id;
+        this.mainTask = mainTask;
         this.codingTaskClasses = codingTaskClasses;
         this.helpTextSequences = helpTextSequences;
     }
@@ -20,6 +22,10 @@ public abstract class CodingTask {
 
     public String getId() {
         return id;
+    }
+
+    public String getMainTask() {
+        return mainTask;
     }
 
     public CodingTaskClass[] getCodingTaskClasses() {

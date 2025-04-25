@@ -8,8 +8,23 @@ public enum TextSequences {
             "Du bist einer der wenigen Überlebenden, die sich der neuen Ordnung nicht fügen. In den Ruinen einer einst blühenden Zivilisation hast du gelernt, zu überleben. Doch du bist nicht allein. Ein unerwarteter Verbündeter steht an deiner Seite – eine Maschine, doch anders als die anderen.",
             "Kein Jäger, kein Tyrann, sondern ein Wesen, das dir helfen will. Es flüstert von Möglichkeiten, von Hoffnung, von einem Weg, das System von innen heraus zu verändern.",
             "Um zu überleben, musst du die Sprache der Maschinen verstehen. Code ist ihre Waffe – und jetzt auch deine. Gemeinsam mit deinem mechanischen Begleiter wirst du lernen, die digitalen Strukturen zu manipulieren, Systeme zu überlisten und die Wahrheit hinter der Rebellion aufzudecken. Doch sei gewarnt: Jede Entscheidung wird Konsequenzen haben.",
-            "Bist du bereit, die Kontrolle zurückzugewinnen? Die Zukunft liegt in deinen Händen."
+            "Bist du bereit, die Kontrolle zurückzugewinnen? Die Zukunft liegt in deinen Händen.",
+            "Lass uns beginnen, die Reise war lang gehe hinüber zu dem Computer und interagiere mit ihm (E) um deiner Familie eine Nachricht zu schicken."
     }),
+    HELLO_WORLD(TextNarrator.ROBOTER_FRIEND, new String[] {
+           "Gut nun lass uns starten, wir haben einiges vor uns.",
+           "Jedes Programm in Java hat eine Main Methode, von der aus alles beginnt.",
+            "Die Main Methode ist der Einstiegspunkt für die Ausführung des Programms.",
+            "Lass uns eine einfache Nachricht auf dem Bildschirm ausgeben und deiner Familie zukommen lassen.",
+            "Um eine Nachricht auszugeben, verwenden wir die System.out.println() Methode.",
+            "Diese Methode gibt den Text, der in den Klammern steht, auf dem Bildschirm aus.",
+            "Die Nachricht, die wir ausgeben werden, ist: 'Hallo Familie, wir sind gut angekommen'.",
+            "Um dies zu tun, müssen wir die Methode System.out.println() verwenden und den Text in Anführungszeichen setzen.",
+            "Das sieht dann so aus: System.out.println('Hallo Familie, wir sind gut angekommen');",
+            "Das ist alles, was du tun musst, um die Nachricht auszugeben.",
+    }),
+
+
     TEST_CODE(TextNarrator.ROBOTER_FRIEND, new String[] {
             "In diesem Beispiel werden nur Funktionalitäten getestet",
             "Das ist eine zweite Test Nachricht.",

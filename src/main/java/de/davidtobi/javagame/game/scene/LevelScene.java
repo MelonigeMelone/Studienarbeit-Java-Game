@@ -20,23 +20,24 @@ import de.davidtobi.javagame.game.listener.PlayerMovementListener;
 import de.davidtobi.javagame.game.textsequence.model.TextSequence;
 import de.davidtobi.javagame.game.world.Level;
 import de.davidtobi.javagame.game.world.LevelBlock;
+import de.davidtobi.javagame.game.world.data.LevelData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LevelScene extends BaseGameScene {
 
-    private final Level level;
+    private final LevelData levelData;
 
     private final Camera camera;
     private final Entity player, roboter;
 
     private Entity collidingEntity;
 
-    public LevelScene(Level level) {
+    public LevelScene(LevelData levelData) {
         super("scene_level");
 
-        this.level = level;
+        this.levelData = levelData;
 
         DimensionHelper dimensionHelper = GameEngine.getDimensionHelper();
 
@@ -50,9 +51,11 @@ public class LevelScene extends BaseGameScene {
 
         addSystem(new MovementSystem());
 
+        int playerSize = 25 * levelData.getLevel().getScale();
+
         player = new Entity("Player", List.of(
-                new PositionComponent(level.getPlayerStartX() * level.getScale(), level.getPlayerStartY() * level.getScale(), 3),
-                new SizeComponent(level.getScale(), level.getScale()),
+                new PositionComponent(levelData.getLevel().getPlayerStartX() * levelData.getLevel().getScale(), levelData.getLevel().getPlayerStartY() * levelData.getLevel().getScale(), 3),
+                new SizeComponent(playerSize, playerSize),
                 //new TextureComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class)),
                 new DynamicSpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class), 64, 64),
                 new RotationComponent(0),
@@ -60,9 +63,11 @@ public class LevelScene extends BaseGameScene {
                 new CollidableComponent())
         );
 
+        int roboterSize = 16 * levelData.getLevel().getScale();
+
         roboter = new Entity("Roboter", List.of(
-                new PositionComponent(level.getPlayerStartX() * level.getScale() + 15, level.getPlayerStartY() * level.getScale() + 15, 3),
-                new SizeComponent((int) (level.getScale() * 0.6), (int) (level.getScale() * 0.6)),
+                new PositionComponent(levelData.getLevel().getPlayerStartX() * levelData.getLevel().getScale() + 15, levelData.getLevel().getPlayerStartY() * levelData.getLevel().getScale() + 15, 3),
+                new SizeComponent(roboterSize, roboterSize),
                 new DynamicSpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/roboterSpriteSheet.png", Texture.class), 32, 32),
                 new RotationComponent(0),
                 new FollowEntityComponent(player, new Vector2D(15, 15)))
@@ -71,23 +76,29 @@ public class LevelScene extends BaseGameScene {
         addEntity(roboter);
         addEntity(player);
 
-        for(int i = 0; i<level.getSizeX(); i++) {
-            for(int j = 0; j<level.getSizeY(); j++) {
+        int backgroundWidth = levelData.getLevel().getBackground().getWidth() * levelData.getLevel().getScale();
+        int backgroundHeight = levelData.getLevel().getBackground().getHeight() * levelData.getLevel().getScale();
+
+        for(int i = 0; i<levelData.getLevel().getSizeX(); i++) {
+            for(int j = 0; j<levelData.getLevel().getSizeY(); j++) {
                 addEntity(new Entity("Level_Background_" + i + j, List.of(
-                        new PositionComponent(level.getScale() + i * level.getScale(), level.getScale() + j * level.getScale(), 2),
-                        new SizeComponent(level.getScale(), level.getScale()),
-                        new TextureComponent(GameEngine.getResourceController().loadResource(level.getBackground().getResourcePath(), Texture.class))
+                        new PositionComponent(backgroundWidth + i * backgroundWidth, backgroundHeight + j * backgroundHeight, 2),
+                        new SizeComponent(backgroundWidth, backgroundHeight),
+                        new TextureComponent(new Texture(levelData.getLevel().getBackground().getSprite()))
                 )));
             }
         }
 
         int decorationCounter = 0;
-        for(LevelBlock levelBlock : level.getDecorations()) {
+        for(LevelBlock levelBlock : levelData.getLevel().getDecorations()) {
+
+            int height = levelBlock.getLevelBlockData().getHeight() * levelData.getLevel().getScale();
+            int width = levelBlock.getLevelBlockData().getWidth() * levelData.getLevel().getScale();
+
             List<Component> levelBlockComponents = new ArrayList<>(List.of(
-                    new PositionComponent(level.getScale() * levelBlock.getX(), level.getScale() * levelBlock.getY(), 2),
-                    new SizeComponent(level.getScale(), level.getScale()),
-                    new TextureComponent(GameEngine.getResourceController().loadResource(levelBlock.getLevelBlockType().getResourcePath(), Texture.class)
-                    )));
+                    new PositionComponent(levelData.getLevel().getScale() * levelBlock.getX(), levelData.getLevel().getScale() * levelBlock.getY(), 2),
+                    new SizeComponent(width, height),
+                    new TextureComponent(new Texture(levelBlock.getLevelBlockData().getSprite()))));
 
             if(levelBlock.isCollidable()) {
                 levelBlockComponents.add(new CollidableComponent());
@@ -138,6 +149,6 @@ public class LevelScene extends BaseGameScene {
     }
 
     public Level getLevel() {
-        return level;
+        return levelData.getLevel();
     }
 }
