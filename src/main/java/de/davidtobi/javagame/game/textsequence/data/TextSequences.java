@@ -12,7 +12,8 @@ public enum TextSequences {
     }),
     TEST_CODE(TextNarrator.ROBOTER_FRIEND, new String[] {
             "In diesem Beispiel werden nur Funktionalitäten getestet",
-            "Das ist eine zweite Test Nachricht."
+            "Das ist eine zweite Test Nachricht.",
+            "Trage mein Name in die Zeichenkette ein, damit ich dir helfen kann.",
     }),
     TEST_CODE_FINISH(TextNarrator.ROBOTER_FRIEND, new String[] {
             "Sehr gut! Du hast die Aufgabe erfolgreich gelöst",
@@ -49,5 +50,13 @@ public enum TextSequences {
 
     public int getSequenceCount() {
         return sequenceCount;
+    }
+
+    public static void reset() {
+        for (TextSequences textSequence : TextSequences.values()) {
+            for (TextSequenceMessage textSequenceMessage : textSequence.getTextSequenceMessages()) {
+                textSequenceMessage.reset();
+            }
+        }
     }
 }

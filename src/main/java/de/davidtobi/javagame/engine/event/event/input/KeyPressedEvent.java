@@ -2,7 +2,15 @@ package de.davidtobi.javagame.engine.event.event.input;
 
 public class KeyPressedEvent extends AbstractKeyEvent {
 
-    public KeyPressedEvent(int keyCode) {
+    private final char keyChar;
+
+    public KeyPressedEvent(int keyCode, char keyChar) {
         super(keyCode);
+
+        this.keyChar = keyChar;
+    }
+
+    public char getKeyChar() {
+        return keyChar;
     }
 }

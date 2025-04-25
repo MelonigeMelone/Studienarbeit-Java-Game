@@ -9,9 +9,6 @@ import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.ecs.renderersystem.UIEntityRendererSystem;
 import de.davidtobi.javagame.engine.ecs.system.ui.UIClickSystem;
 import de.davidtobi.javagame.engine.ecs.system.ui.UIHoverSystem;
-import de.davidtobi.javagame.engine.event.event.input.KeyReleasedEvent;
-import de.davidtobi.javagame.engine.event.event.input.MouseReleasedEvent;
-import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
 import de.davidtobi.javagame.engine.log.EngineLogger;
 import de.davidtobi.javagame.engine.log.EngineLoggerLevel;
@@ -20,13 +17,12 @@ import de.davidtobi.javagame.engine.util.DimensionHelper;
 import de.davidtobi.javagame.game.codingtask.CodingTaskClass;
 import de.davidtobi.javagame.game.codingtask.CodingTaskHelpSequenceType;
 import de.davidtobi.javagame.game.codingtask.CodingTasks;
+import de.davidtobi.javagame.game.listener.CodingSceneKeyInputListener;
+import de.davidtobi.javagame.game.listener.CodingSceneMouseInputListener;
 import de.davidtobi.javagame.game.textsequence.model.TextSequence;
-import de.davidtobi.javagame.game.util.JavaCompilerUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -58,7 +54,6 @@ public class CodingScene extends BaseGameScene implements Listener {
         addRendererSystem(new UIEntityRendererSystem());
         addSystem(new UIClickSystem());
         addSystem(new UIHoverSystem());
-        addListener(this);
 
         addEntity(new Entity("UI", List.of(
                 new UIPositionComponent(dimensionHelper.getCenteredX(1920), dimensionHelper.getCenteredY(1080), 0),
@@ -103,7 +98,6 @@ public class CodingScene extends BaseGameScene implements Listener {
                         return;
                     }
                     this.selectedCodingTaskClass.setCurrentCode(code);
-
 
                     boolean compiledSuccessfully = false;
                     try {
@@ -155,6 +149,9 @@ public class CodingScene extends BaseGameScene implements Listener {
             openTextSequence(new TextSequence(codingTasks.getCodingTask().getHelpTextSequences()
                     .get(CodingTaskHelpSequenceType.INITIAL)));
         }
+
+        addListener(new CodingSceneKeyInputListener(this));
+        addListener(new CodingSceneMouseInputListener(this));
     }
 
     @Override
@@ -162,102 +159,24 @@ public class CodingScene extends BaseGameScene implements Listener {
 
     }
 
-    @EventHandler
-    public void onKeyReleased(KeyReleasedEvent event) {
-        if(inTextSequence) {
-            return;
-        }
-
-        int keyCode = event.getKeyCode();
-        char keyChar = event.getKeyChar();
-
-        if (keyCode == KeyEvent.VK_BACK_SPACE && cursorIndex > 0) {
-            // Remove character before the cursor
-            code = code.substring(0, cursorIndex - 1) + code.substring(cursorIndex);
-            cursorIndex--;
-        } else if (keyCode == KeyEvent.VK_DELETE && cursorIndex < code.length()) {
-            // Remove character at the cursor
-            code = code.substring(0, cursorIndex) + code.substring(cursorIndex + 1);
-        } else if (keyCode == KeyEvent.VK_ENTER) {
-            // Add newline at the cursor
-            code = code.substring(0, cursorIndex) + "\n" + code.substring(cursorIndex);
-            cursorIndex++;
-        } else if (keyCode == KeyEvent.VK_SPACE) {
-            // Add space at the cursor
-            code = code.substring(0, cursorIndex) + " " + code.substring(cursorIndex);
-            cursorIndex++;
-        } else if (keyCode == KeyEvent.VK_LEFT) {
-            // Move cursor left
-            cursorIndex = Math.max(0, cursorIndex - 1);
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
-            // Move cursor right
-            cursorIndex = Math.min(code.length(), cursorIndex + 1);
-        } else if (Character.isLowerCase(keyChar) || Character.isDigit(keyChar) || isAllowedSymbol(keyChar)) {
-            // Insert character at the cursor
-            code = code.substring(0, cursorIndex) + keyChar + code.substring(cursorIndex);
-            cursorIndex++;
-        }
-
-        try {
-            // Compile & Load class
-            Class<?> clazz = JavaCompilerUtil.compileAndLoad(code, "test");
-
-            // Call method dynamically
-            Method method = clazz.getMethod("getValue");
-            Object result = method.invoke(null);
-
-            System.out.println("Captured Value: " + result);
-        } catch (Exception exception) {
-            // Handle exception
-        }
+    public String getCode() {
+        return code;
     }
 
-    @EventHandler
-    public void onMouseClicked(MouseReleasedEvent event) {
-        if(inTextSequence) {
-            return;
-        }
-
-        updateCursorPosition(event.getPosition().getX(), event.getPosition().getY());
+    public void setCode(String code) {
+        this.code = code;
     }
 
-
-    private void updateCursorPosition(float mouseX, float mouseY) {
-        UIPositionComponent positionComponent = codingBox.getComponent(UIPositionComponent.class);
-        UICodingComponent codingComponent = codingBox.getComponent(UICodingComponent.class);
-
-        FontMetrics fontMetrics = codingComponent.getFontMetrics();
-        if(fontMetrics == null) {
-            return;
-        }
-        float x = positionComponent.getX();
-        float y = positionComponent.getY();
-        cursorIndex = 0;
-
-        for (String line : code.split("\n")) {
-            int lineHeight = fontMetrics.getHeight();
-            if (mouseY >= y && mouseY < y + lineHeight) {
-                for (int i = 0; i < line.length(); i++) {
-                    int charWidth = fontMetrics.charWidth(line.charAt(i));
-                    if (mouseX >= x && mouseX < x + charWidth) {
-                        cursorIndex += i;
-                        return;
-                    }
-                    x += charWidth;
-                }
-                cursorIndex += line.length();
-                return;
-            }
-            y += lineHeight;
-            cursorIndex += line.length() + 1;
-        }
-        if(cursorIndex > code.length()) {
-            cursorIndex = code.length();
-        }
+    public int getCursorIndex() {
+        return cursorIndex;
     }
 
-    private boolean isAllowedSymbol(char c) {
-        return "!@#$%^&*()-_=+{}[];:'\",.<>?/\\|".indexOf(c) >= 0;
+    public void setCursorIndex(int cursorIndex) {
+        this.cursorIndex = cursorIndex;
+    }
+
+    public Entity getCodingBox() {
+        return codingBox;
     }
 
     private String getCodeWithCursor() {
@@ -272,5 +191,4 @@ public class CodingScene extends BaseGameScene implements Listener {
     private void initCursor() {
         cursorIndex = code.length();
     }
-
 }

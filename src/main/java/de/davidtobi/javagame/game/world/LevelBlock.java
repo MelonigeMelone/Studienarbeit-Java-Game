@@ -2,30 +2,31 @@ package de.davidtobi.javagame.game.world;
 
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.scene.Scene;
+import de.davidtobi.javagame.game.world.data.OldLevelBlockType;
 
 import java.util.function.Supplier;
 
 public class LevelBlock {
 
     private final int x, y;
-    private final LevelBlockType levelBlockType;
+    private final OldLevelBlockType oldLevelBlockType;
     private final boolean collidable;
     private final boolean interactable;
     private Supplier<Scene> newScene;
     private Entity entity;
 
-    public LevelBlock(int x, int y, LevelBlockType levelBlockType, boolean collidable) {
+    public LevelBlock(int x, int y, OldLevelBlockType oldLevelBlockType, boolean collidable) {
         this.x = x;
         this.y = y;
-        this.levelBlockType = levelBlockType;
+        this.oldLevelBlockType = oldLevelBlockType;
         this.collidable = collidable;
         this.interactable = false;
     }
 
-    public LevelBlock(int x, int y, LevelBlockType levelBlockType, boolean collidable, Supplier<Scene> newScene) {
+    public LevelBlock(int x, int y, OldLevelBlockType oldLevelBlockType, boolean collidable, Supplier<Scene> newScene) {
         this.x = x;
         this.y = y;
-        this.levelBlockType = levelBlockType;
+        this.oldLevelBlockType = oldLevelBlockType;
         this.collidable = collidable;
         this.interactable = true;
         this.newScene = newScene;
@@ -39,8 +40,8 @@ public class LevelBlock {
         return y;
     }
 
-    public LevelBlockType getLevelBlockType() {
-        return levelBlockType;
+    public OldLevelBlockType getLevelBlockType() {
+        return oldLevelBlockType;
     }
 
     public boolean isCollidable() {

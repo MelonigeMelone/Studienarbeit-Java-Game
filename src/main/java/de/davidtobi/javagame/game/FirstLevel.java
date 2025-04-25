@@ -12,7 +12,7 @@ import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
 import de.davidtobi.javagame.game.world.Level;
 import de.davidtobi.javagame.game.world.LevelBlock;
-import de.davidtobi.javagame.game.world.LevelBlockType;
+import de.davidtobi.javagame.game.world.data.OldLevelBlockType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,64 +42,64 @@ public class FirstLevel extends Scene {
                 150,
                 20,
                 20,
-                LevelBlockType.GRASS,
+                OldLevelBlockType.GRASS,
                 new ArrayList<>() {{
                     for (int x = 0; x < 20; x++) {
-                        add(new LevelBlock(x, 0, LevelBlockType.TREE, true));
-                        add(new LevelBlock(x, 14, LevelBlockType.TREE, true));
+                        add(new LevelBlock(x, 0, OldLevelBlockType.TREE, true));
+                        add(new LevelBlock(x, 14, OldLevelBlockType.TREE, true));
                     }
                     for (int y = 1; y < 14; y++) {
-                        add(new LevelBlock(0, y, LevelBlockType.TREE, true));
-                        add(new LevelBlock(19, y, LevelBlockType.TREE, true));
+                        add(new LevelBlock(0, y, OldLevelBlockType.TREE, true));
+                        add(new LevelBlock(19, y, OldLevelBlockType.TREE, true));
                     }
 
                     for (int x = 2; x < 7; x++) {
-                        add(new LevelBlock(x, 13, LevelBlockType.PATH_HORIZONTAL, false));
+                        add(new LevelBlock(x, 13, OldLevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for (int y = 2; y < 13; y++) {
-                        add(new LevelBlock(2, y, LevelBlockType.PATH_STRAIGHT, false));
+                        add(new LevelBlock(2, y, OldLevelBlockType.PATH_STRAIGHT, false));
                     }
                     for(int y = 13; y > 8; y--){
-                        add(new LevelBlock(7, y, LevelBlockType.PATH_STRAIGHT, false));
+                        add(new LevelBlock(7, y, OldLevelBlockType.PATH_STRAIGHT, false));
                     }
                     for (int x = 8; x < 14; x++) {
-                        add(new LevelBlock(x, 9, LevelBlockType.PATH_HORIZONTAL, false));
+                        add(new LevelBlock(x, 9, OldLevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for(int y = 8; y > 5; y--){
-                        add(new LevelBlock(13, y, LevelBlockType.PATH_STRAIGHT, false));
+                        add(new LevelBlock(13, y, OldLevelBlockType.PATH_STRAIGHT, false));
                     }
                     for (int x = 13; x > 5; x--) {
-                        add(new LevelBlock(x, 5, LevelBlockType.PATH_HORIZONTAL, false));
+                        add(new LevelBlock(x, 5, OldLevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for(int y = 4; y > 0; y--){
-                        add(new LevelBlock(6, y, LevelBlockType.PATH_STRAIGHT, false));
+                        add(new LevelBlock(6, y, OldLevelBlockType.PATH_STRAIGHT, false));
                     }
                     for (int x = 6; x < 19; x++) {
-                        add(new LevelBlock(x, 1, LevelBlockType.PATH_HORIZONTAL, false));
+                        add(new LevelBlock(x, 1, OldLevelBlockType.PATH_HORIZONTAL, false));
                     }
                     for (int y = 1; y < 7; y++) {
-                        add(new LevelBlock(18, y, LevelBlockType.PATH_STRAIGHT, false));
+                        add(new LevelBlock(18, y, OldLevelBlockType.PATH_STRAIGHT, false));
                     }
 
                     for (int y = 1; y < 13; y++) {
-                        add(new LevelBlock(4, y, LevelBlockType.TREE, true));
+                        add(new LevelBlock(4, y, OldLevelBlockType.TREE, true));
                     }
                     for (int x = 5; x < 12; x++) {
-                        add(new LevelBlock(x, 7, LevelBlockType.TREE, true));
+                        add(new LevelBlock(x, 7, OldLevelBlockType.TREE, true));
                     }
                     for (int x = 8; x < 17; x++) {
-                        add(new LevelBlock(x, 3, LevelBlockType.TREE, true));
+                        add(new LevelBlock(x, 3, OldLevelBlockType.TREE, true));
                     }
                     for (int y = 4; y < 14; y++) {
-                        add(new LevelBlock(16, y, LevelBlockType.TREE, true));
+                        add(new LevelBlock(16, y, OldLevelBlockType.TREE, true));
                     }
                     for (int x = 9; x < 16; x++) {
-                        add(new LevelBlock(x, 11, LevelBlockType.TREE, true));
+                        add(new LevelBlock(x, 11, OldLevelBlockType.TREE, true));
                     }
                     for (int y = 12; y < 14; y++) {
-                        add(new LevelBlock(9, y, LevelBlockType.TREE, true));
+                        add(new LevelBlock(9, y, OldLevelBlockType.TREE, true));
                     }
-                    add(new LevelBlock(18, 7, LevelBlockType.GATE, true));
+                    add(new LevelBlock(18, 7, OldLevelBlockType.GATE, true));
                 }}
         );
 

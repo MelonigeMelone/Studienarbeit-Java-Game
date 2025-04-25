@@ -1,5 +1,7 @@
 package de.davidtobi.javagame.game.world;
 
+import de.davidtobi.javagame.game.world.data.LevelBlockData;
+
 import java.util.List;
 
 public class Level {
@@ -10,11 +12,11 @@ public class Level {
 
     private int playerStartX, playerStartY;
 
-    private LevelBlockType background;
+    private LevelBlockData background;
 
     private List<LevelBlock> decorations;
 
-    public Level(int scale, int sizeX, int sizeY, int playerStartX, int playerStartY, LevelBlockType background, List<LevelBlock> decorations) {
+    public Level(int scale, int sizeX, int sizeY, int playerStartX, int playerStartY, LevelBlockData background, List<LevelBlock> decorations) {
         this.scale = scale;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -44,7 +46,7 @@ public class Level {
         return playerStartY;
     }
 
-    public LevelBlockType getBackground() {
+    public LevelBlockData getBackground() {
         return background;
     }
 

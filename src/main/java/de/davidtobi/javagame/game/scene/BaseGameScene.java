@@ -3,14 +3,12 @@ package de.davidtobi.javagame.game.scene;
 import de.davidtobi.javagame.engine.GameEngine;
 import de.davidtobi.javagame.engine.data.HorizontalAlignment;
 import de.davidtobi.javagame.engine.data.VerticalAlignment;
-import de.davidtobi.javagame.engine.ecs.component.ui.UILabelComponent;
-import de.davidtobi.javagame.engine.ecs.component.ui.UIPositionComponent;
-import de.davidtobi.javagame.engine.ecs.component.ui.UISizeComponent;
-import de.davidtobi.javagame.engine.ecs.component.ui.UITextureComponent;
+import de.davidtobi.javagame.engine.ecs.component.ui.*;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.resource.model.Texture;
 import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
+import de.davidtobi.javagame.game.codingtask.CodingTasks;
 import de.davidtobi.javagame.game.textsequence.listener.TextSequenceListener;
 import de.davidtobi.javagame.game.textsequence.model.TextSequence;
 
@@ -25,6 +23,9 @@ public abstract class BaseGameScene extends Scene {
     protected Entity sequenceTextbox, sequenceContent, sequenceNarrator, sequenceNarratorImage;
     protected boolean inTextSequence = false;
     protected TextSequence currentTextSequence;
+
+    protected Entity pauseMenuBackground, pauseMenuTitle, pauseMenuResumeButton, pauseMenuExitButton;
+    protected boolean isPaused = false;
 
     public BaseGameScene(String name) {
         super(name);
@@ -78,6 +79,64 @@ public abstract class BaseGameScene extends Scene {
         sequenceNarratorImage.setDisabled(true);
         addEntity(sequenceNarratorImage);
 
+        addEntity(new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(60) - 885, dimensionHelper.getCenteredY(60) - 490, 1),
+                new UISizeComponent(60, 60),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/pause.png", Texture.class)),
+                new UIHoverComponent(GameEngine.getResourceController().loadResource("/img/ui/pause_hover.png", Texture.class)),
+                new UIClickableComponent(() -> {
+                    if(!isPaused) {
+                        pauseGame();
+                    }
+                })
+        )));
+
+        pauseMenuBackground = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(980), dimensionHelper.getCenteredY(900), 100),
+                new UISizeComponent(980, 900),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/pauseMenuBackground.png", Texture.class))
+        ));
+        pauseMenuBackground.setDisabled(true);
+        addEntity(pauseMenuBackground);
+
+        pauseMenuTitle = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(735), dimensionHelper.getCenteredY(675) - 200, 101),
+                new UISizeComponent(735, 675),
+                new UILabelComponent("Pause Menu", new Color(0xFFBB00), new Font("Arial", Font.BOLD, 75), HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+        ));
+        pauseMenuTitle.setDisabled(true);
+        addEntity(pauseMenuTitle);
+
+        pauseMenuResumeButton = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(550), dimensionHelper.getCenteredY(150) - 50, 101),
+                new UISizeComponent(550, 150),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/button.png", Texture.class)),
+                new UIHoverComponent(GameEngine.getResourceController().loadResource("/img/ui/button_hover.png", Texture.class)),
+                new UILabelComponent("Fortsetzen", new Color(0xFFBB00), new Font("Arial", Font.BOLD, 37),
+                        HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+                new UIClickableComponent(() -> {
+                    resumeGame();
+                })
+        ));
+
+        pauseMenuResumeButton.setDisabled(true);
+        addEntity(pauseMenuResumeButton);
+
+        pauseMenuExitButton = new Entity("UI", List.of(
+                new UIPositionComponent(dimensionHelper.getCenteredX(550), dimensionHelper.getCenteredY(150) + 150, 101),
+                new UISizeComponent(550, 150),
+                new UITextureComponent(GameEngine.getResourceController().loadResource("/img/ui/button.png", Texture.class)),
+                new UIHoverComponent(GameEngine.getResourceController().loadResource("/img/ui/button_hover.png", Texture.class)),
+                new UILabelComponent("Hauptmenü", new Color(0xFFBB00), new Font("Arial", Font.BOLD, 37),
+                        HorizontalAlignment.CENTER, VerticalAlignment.CENTER),
+                new UIClickableComponent(() -> {
+                    resumeGame();
+                    GameEngine.getSceneController().switchScene(new MainMenuScene());
+                })
+        ));
+        pauseMenuExitButton.setDisabled(true);
+        addEntity(pauseMenuExitButton);
+
         addListener(new TextSequenceListener(this));
     }
 
@@ -110,5 +169,25 @@ public abstract class BaseGameScene extends Scene {
 
     public TextSequence getCurrentTextSequence() {
         return currentTextSequence;
+    }
+
+    private void pauseGame() {
+        GameEngine.getGameSettings().setPaused(true);
+        isPaused = true;
+
+        pauseMenuBackground.setDisabled(false);
+        pauseMenuTitle.setDisabled(false);
+        pauseMenuResumeButton.setDisabled(false);
+        pauseMenuExitButton.setDisabled(false);
+    }
+
+    private void resumeGame() {
+        GameEngine.getGameSettings().setPaused(false);
+        isPaused = false;
+
+        pauseMenuBackground.setDisabled(true);
+        pauseMenuTitle.setDisabled(true);
+        pauseMenuResumeButton.setDisabled(true);
+        pauseMenuExitButton.setDisabled(true);
     }
 }

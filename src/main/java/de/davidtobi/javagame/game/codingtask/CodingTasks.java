@@ -16,7 +16,7 @@ public enum CodingTasks {
                                     private TestObject testObject;
                                     
                                     public Main() {
-                                        testObject = new TestObject("TestString");
+                                        testObject = new TestObject("HierNameEintragen");
                                     }
                                     
                                     public TestObject getTestObject() {
@@ -68,7 +68,7 @@ public enum CodingTasks {
             String nameValue = (String) getNameMethod.invoke(testObjectInstance);
 
             // Verify the expected value
-            return "TestString".equals(nameValue);
+            return "Ideo".equals(nameValue);
         }
     }
 

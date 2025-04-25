@@ -1,5 +1,7 @@
 package de.davidtobi.javagame.game.textsequence.data;
 
+import de.davidtobi.javagame.engine.GameEngine;
+
 public class TextSequenceMessage {
 
     private static int TICK_SPEED = 20;
@@ -15,6 +17,12 @@ public class TextSequenceMessage {
         this.narrator = narrator;
         this.message = message;
         this.currentDisplayedMessage = "";
+    }
+
+    public void reset() {
+        currentDisplayedMessage = "";
+        tickIndex = 0;
+        currentDisplayedMessageFinished = false;
     }
 
     public TextNarrator getNarrator() {
@@ -35,6 +43,10 @@ public class TextSequenceMessage {
     }
 
     public void tickCurrentDisplayedMessage() {
+        if(GameEngine.getGameSettings().isPaused()) {
+            return;
+        }
+
         if (currentDisplayedMessageFinished) {
             return;
         }

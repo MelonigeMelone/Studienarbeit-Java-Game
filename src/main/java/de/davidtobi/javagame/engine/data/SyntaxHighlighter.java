@@ -6,7 +6,8 @@ import java.util.HashMap;
 public enum SyntaxHighlighter {
     JAVA("java", new HashMap<>() {{
         put("//.*", Color.GRAY); // Single-line comments
-        put("\\b(public|class|static|void|if|for|else|return|true|false|int|double|boolean)\\b",  Color.decode("#C678DD"));
+        put("\\b(public|private|final|class|static|void|if|for|else|return|true|false|int|double|boolean|float|new)\\b",  Color.decode("#C678DD"));
+        put("\\b(String)\\b",  Color.decode("#E5C07B"));
         put("-?\\b\\d+\\b", Color.decode("#D19A66"));
     }});
 

@@ -17,7 +17,6 @@ import de.davidtobi.javagame.game.textsequence.data.TextSequences;
 import de.davidtobi.javagame.game.listener.EntityCollisionListener;
 import de.davidtobi.javagame.game.listener.InteractListener;
 import de.davidtobi.javagame.game.listener.PlayerMovementListener;
-import de.davidtobi.javagame.game.textsequence.listener.TextSequenceListener;
 import de.davidtobi.javagame.game.textsequence.model.TextSequence;
 import de.davidtobi.javagame.game.world.Level;
 import de.davidtobi.javagame.game.world.LevelBlock;
@@ -55,7 +54,7 @@ public class LevelScene extends BaseGameScene {
                 new PositionComponent(level.getPlayerStartX() * level.getScale(), level.getPlayerStartY() * level.getScale(), 3),
                 new SizeComponent(level.getScale(), level.getScale()),
                 //new TextureComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class)),
-                new SpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class), 64, 64),
+                new DynamicSpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/SpriteSheet.png", Texture.class), 64, 64),
                 new RotationComponent(0),
                 new VelocityComponent(0,0,0),
                 new CollidableComponent())
@@ -64,7 +63,7 @@ public class LevelScene extends BaseGameScene {
         roboter = new Entity("Roboter", List.of(
                 new PositionComponent(level.getPlayerStartX() * level.getScale() + 15, level.getPlayerStartY() * level.getScale() + 15, 3),
                 new SizeComponent((int) (level.getScale() * 0.6), (int) (level.getScale() * 0.6)),
-                new SpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/roboterSpriteSheet.png", Texture.class), 32, 32),
+                new DynamicSpriteSheetComponent(GameEngine.getResourceController().loadResource("/img/roboterSpriteSheet.png", Texture.class), 32, 32),
                 new RotationComponent(0),
                 new FollowEntityComponent(player, new Vector2D(15, 15)))
         );

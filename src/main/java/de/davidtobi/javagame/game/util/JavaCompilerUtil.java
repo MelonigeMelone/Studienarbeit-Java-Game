@@ -8,12 +8,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class JavaCompilerUtil {
+
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public static boolean isValidJavaCode(String className, String code) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -38,6 +41,9 @@ public class JavaCompilerUtil {
         compiler.run(null, null, null, sourceFile.getPath());
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(".").toURI().toURL()});
+
+        scheduleFileDeletion(className);
+
         return Class.forName(className, true, classLoader);
     }
 
@@ -54,6 +60,22 @@ public class JavaCompilerUtil {
                 .map(className -> className + ".java").toArray(String[]::new));
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{new File(".").toURI().toURL()});
+
+        // Clean up the source files after compilation
+
+        classCodeMap.keySet().forEach(JavaCompilerUtil::scheduleFileDeletion);
+
         return Class.forName(mainClassName, true, classLoader);
+    }
+
+    // Schedules file deletion 2 seconds after compilation
+    private static void scheduleFileDeletion(String className) {
+        scheduler.schedule(() -> deleteFiles(className), 2, TimeUnit.SECONDS);
+    }
+
+    // Deletes Java source and compiled class files
+    private static void deleteFiles(String className) {
+        new File(className + ".java").delete(); // Delete source file
+        new File(className + ".class").delete(); // Delete compiled class file
     }
 }

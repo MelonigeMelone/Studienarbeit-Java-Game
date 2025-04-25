@@ -77,20 +77,20 @@ public class EntityRendererSystem extends RendererSystem {
                 BufferedImage image = textureComponent.getTexture().getImage();
                 drawBufferedImage(graphics, image, entity.getComponent(VelocityComponent.class), entity.getComponent(RotationComponent.class)
                         , centerX, centerY, width, height);
-            } else if(entity.hasComponent(SpriteSheetComponent.class)) {
-                SpriteSheetComponent spriteSheetComponent = entity.getComponent(SpriteSheetComponent.class);
-                BufferedImage sprite = spriteSheetComponent.getSprite(0, 0);
+            } else if(entity.hasComponent(DynamicSpriteSheetComponent.class)) {
+                DynamicSpriteSheetComponent dynamicSpriteSheetComponent = entity.getComponent(DynamicSpriteSheetComponent.class);
+                BufferedImage sprite = dynamicSpriteSheetComponent.getSprite(0, 0);
 
                 if(sprite == null) {
                     return;
                 }
 
-                int spriteSheetAnimationCounter = spriteSheetComponent.getSpriteSheetAnimationCounter();
+                int spriteSheetAnimationCounter = dynamicSpriteSheetComponent.getSpriteSheetAnimationCounter();
 
                 VelocityComponent velocityComponent = entity.getComponent(VelocityComponent.class);
                 if (velocityComponent != null) {
                     if(velocityComponent.isMoving()) {
-                        spriteSheetComponent.incrementSpriteSheetAnimationCounter();
+                        dynamicSpriteSheetComponent.incrementSpriteSheetAnimationCounter();
 
                     }
                 }
@@ -99,9 +99,9 @@ public class EntityRendererSystem extends RendererSystem {
                 if (rotationComponent != null) {
                     if(entity.getEntityTag().equals("Roboter")) {
                        //TODO
-                        sprite = spriteSheetComponent.getSprite(0,0);
+                        sprite = dynamicSpriteSheetComponent.getSprite(0,0);
                     } else {
-                        sprite = spriteSheetComponent.getSprite(spriteSheetAnimationCounter, PlayerSpriteSheetUtil.getSpriteSheetYBasedOnRotationPlayer(rotationComponent.getRotation()));
+                        sprite = dynamicSpriteSheetComponent.getSprite(spriteSheetAnimationCounter, PlayerSpriteSheetUtil.getSpriteSheetYBasedOnRotationPlayer(rotationComponent.getRotation()));
                     }
                 }
 
