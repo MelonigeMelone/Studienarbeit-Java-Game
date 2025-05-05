@@ -11,6 +11,7 @@ import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
 import de.davidtobi.javagame.engine.math.model.Vector3D;
 import de.davidtobi.javagame.game.scene.LevelScene;
+import de.davidtobi.javagame.game.world.LevelBlock;
 
 import java.util.Optional;
 
@@ -37,7 +38,9 @@ public class EntityCollisionListener implements Listener {
 
         levelScene.setCollidingEntity(optionalEntity.orElse(null));
 
-        entityMoveEvent.setCancelled(optionalEntity.isPresent());
+        boolean isPresent = optionalEntity.isPresent();
+
+        entityMoveEvent.setCancelled(isPresent);
     }
 
     public boolean collidesWithEntityOld(Entity entity, Entity target, Vector3D nextPosition) {

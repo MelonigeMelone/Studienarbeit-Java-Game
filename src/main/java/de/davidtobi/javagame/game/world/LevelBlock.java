@@ -3,7 +3,7 @@ package de.davidtobi.javagame.game.world;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
 import de.davidtobi.javagame.engine.scene.Scene;
 import de.davidtobi.javagame.game.world.data.LevelBlockData;
-import de.davidtobi.javagame.game.world.data.OldLevelBlockType;
+import de.davidtobi.javagame.game.world.data.TriggerType;
 
 import java.util.function.Supplier;
 
@@ -13,6 +13,7 @@ public class LevelBlock {
     private final LevelBlockData levelBlockData;
     private final boolean collidable;
     private final boolean interactable;
+    private TriggerType triggerType;
     private Supplier<Scene> newScene;
     private Entity entity;
 
@@ -24,11 +25,12 @@ public class LevelBlock {
         this.interactable = false;
     }
 
-    public LevelBlock(int x, int y, LevelBlockData levelBlockData, boolean collidable, Supplier<Scene> newScene) {
+    public LevelBlock(int x, int y, LevelBlockData levelBlockData, boolean collidable, TriggerType triggerType, Supplier<Scene> newScene) {
         this.x = x;
         this.y = y;
         this.levelBlockData = levelBlockData;
         this.collidable = collidable;
+        this.triggerType = triggerType;
         this.interactable = true;
         this.newScene = newScene;
     }
@@ -47,6 +49,10 @@ public class LevelBlock {
 
     public boolean isCollidable() {
         return collidable;
+    }
+
+    public TriggerType getTriggerType() {
+        return triggerType;
     }
 
     public boolean isInteractable() {

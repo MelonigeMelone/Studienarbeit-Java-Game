@@ -1,12 +1,13 @@
 package de.davidtobi.javagame.game.listener;
 
 import de.davidtobi.javagame.engine.GameEngine;
+import de.davidtobi.javagame.engine.ecs.component.CollidableComponent;
 import de.davidtobi.javagame.engine.ecs.component.PositionComponent;
 import de.davidtobi.javagame.engine.ecs.model.Entity;
+import de.davidtobi.javagame.engine.event.event.EntityMoveEvent;
 import de.davidtobi.javagame.engine.event.event.input.KeyPressedEvent;
 import de.davidtobi.javagame.engine.event.model.EventHandler;
 import de.davidtobi.javagame.engine.event.model.Listener;
-import de.davidtobi.javagame.game.scene.CodingScene;
 import de.davidtobi.javagame.game.scene.LevelScene;
 import de.davidtobi.javagame.game.world.LevelBlock;
 import de.davidtobi.javagame.game.world.data.TriggerType;
@@ -14,11 +15,11 @@ import de.davidtobi.javagame.game.world.data.TriggerType;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 
-public class InteractListener implements Listener {
+public class CollisionListener implements Listener {
 
     private final LevelScene levelScene;
 
-    public InteractListener(LevelScene levelScene) {
+    public CollisionListener(LevelScene levelScene) {
         this.levelScene = levelScene;
     }
 
@@ -31,16 +32,13 @@ public class InteractListener implements Listener {
         PositionComponent positionComponent = levelScene.getPlayer().getComponent(PositionComponent.class);
 
         Optional<LevelBlock> optionalLevelBlock = levelScene.getLevel().getDecorations().stream().filter(levelBlock -> levelBlock.isInteractable() &&
-                checkDistance(levelBlock, positionComponent) && levelBlock.getTriggerType().equals(TriggerType.INTERACT)).findFirst();
+                checkDistance(levelBlock, positionComponent) && levelBlock.getTriggerType().equals(TriggerType.COLLISION)).findFirst();
 
         if(optionalLevelBlock.isEmpty()) {
             return;
         }
 
-
-        if(event.getKeyCode() == KeyEvent.VK_E) {
-            GameEngine.getSceneController().switchScene(optionalLevelBlock.get().getNewScene().get());
-        }
+        GameEngine.getSceneController().switchScene(optionalLevelBlock.get().getNewScene().get());
     }
 
     private boolean checkDistance(LevelBlock levelBlock, PositionComponent positionComponent) {

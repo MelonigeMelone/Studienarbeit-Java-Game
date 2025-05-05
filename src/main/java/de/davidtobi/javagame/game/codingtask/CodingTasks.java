@@ -36,6 +36,29 @@ public enum CodingTasks {
                     codingTaskClass.getCurrentCode().contains("Hallo Familie, wir sind gut angekommen");
         }
     }),
+    PLAYER_INFORMATION(new CodingTask("set_playername", "Setzte dein Spielername als Wert des Strings",
+            new CodingTaskClass[] {
+                    new CodingTaskClass("Player",
+                            """
+                                        private String playerName = "HierNameEintragen";
+                                        private int playerAge = 0;
+                                    """,
+                            """
+                            """)
+            },
+            new HashMap<>() {{
+                put(CodingTaskHelpSequenceType.INITIAL, TextSequences.CODENAME);
+                put(CodingTaskHelpSequenceType.TASK_FINISH, TextSequences.CODENAME_FINISH);
+                put(CodingTaskHelpSequenceType.TASK_FAILED, TextSequences.CODENAME_FAILED);
+            }}) {
+        @Override
+        public boolean compiledSuccessfully() throws Exception {
+            CodingTaskClass codingTaskClass = getCodingTaskClasses()[0];
+            boolean compiled = JavaCompilerUtil.isValidJavaCode(codingTaskClass.getClassName(), codingTaskClass.getCurrentCode());
+
+            return compiled;
+        }
+    }),
     TEST_FUNCTIONALITY(new CodingTask("test_functionality", "",
             new CodingTaskClass[]{
                     new CodingTaskClass("Main",

@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
 
 public class PlayerMovementListener implements Listener {
 
-    private final int PLAYER_SPEED = 250;
+    private final int PLAYER_SPEED = 300;
 
     private final Camera camera;
     private final Entity player;

@@ -13,6 +13,7 @@ import de.davidtobi.javagame.engine.ecs.system.MovementSystem;
 import de.davidtobi.javagame.engine.math.model.Vector2D;
 import de.davidtobi.javagame.engine.resource.model.Texture;
 import de.davidtobi.javagame.engine.util.DimensionHelper;
+import de.davidtobi.javagame.game.listener.CollisionListener;
 import de.davidtobi.javagame.game.textsequence.data.TextSequences;
 import de.davidtobi.javagame.game.listener.EntityCollisionListener;
 import de.davidtobi.javagame.game.listener.InteractListener;
@@ -121,6 +122,7 @@ public class LevelScene extends BaseGameScene {
         addListener(new PlayerMovementListener(camera, player, this));
         addListener(new EntityCollisionListener(this));
         addListener(new InteractListener(this));
+        addListener(new CollisionListener(this));
     }
 
     @Override

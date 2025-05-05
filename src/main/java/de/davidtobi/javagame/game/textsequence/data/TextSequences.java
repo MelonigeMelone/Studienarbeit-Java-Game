@@ -38,6 +38,28 @@ public enum TextSequences {
             "Wenn du Hilfe brauchst, schau dir die Hinweise an oder frage mich.",
     }),
 
+    CODENAME(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Du hast erfolgreich kommuniziert – großartig!",
+            "Jetzt will der Computer wissen, mit wem er es zu tun hat.",
+            "In Java speichern wir Informationen wie deinen Namen in sogenannten Variablen.",
+            "Für Texte verwenden wir den Typ String – mit einem großen S.",
+            "Versuch’s mal – speichere deinen Namen und begrüße dich selbst im System.",
+    }),
+
+    CODENAME_FINISH(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Sehr gut! Der Computer kennt dich jetzt – willkommen, Held oder Heldin der Java-Welt!",
+            "Du hast erfolgreich deinen Namen gespeichert",
+            "Das war ein wichtiger Schritt im Umgang mit Variablen.",
+            "Gehen wir weiter – neue Herausforderungen warten schon.",
+    }),
+
+    CODENAME_FAILED(TextNarrator.ROBOTER_FRIEND, new String[] {
+            "Irgendwas stimmt noch nicht ganz.",
+            "Hast du daran gedacht, deinen Namen in Anführungszeichen zu setzen?",
+            "Und wurde die Variable korrekt deklariert mit String name = \"...\";?",
+            "Schau nochmal genau hin – du kriegst das hin!",
+    }),
+
 
     TEST_CODE(TextNarrator.ROBOTER_FRIEND, new String[] {
             "In diesem Beispiel werden nur Funktionalitäten getestet",
