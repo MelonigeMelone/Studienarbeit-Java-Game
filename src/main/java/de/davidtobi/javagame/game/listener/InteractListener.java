@@ -46,7 +46,7 @@ public class InteractListener implements Listener {
     private boolean checkDistance(LevelBlock levelBlock, PositionComponent positionComponent) {
         Entity entity = levelBlock.getEntity();
         PositionComponent entityPositionComponent = entity.getComponent(PositionComponent.class);
-        return Math.abs(positionComponent.getX() - entityPositionComponent.getX()) <= 50 &&
-                Math.abs(positionComponent.getY() - entityPositionComponent.getY()) <= 50;
+        return Math.abs(positionComponent.getX() - entityPositionComponent.getX()) <= 60 &&
+                Math.abs(positionComponent.getY() - entityPositionComponent.getY()) <= 60;
     }
 }
