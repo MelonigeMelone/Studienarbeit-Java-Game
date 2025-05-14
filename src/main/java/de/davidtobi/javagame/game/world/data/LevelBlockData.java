@@ -9,6 +9,7 @@ public enum LevelBlockData {
     FLOOR_VENT(LevelBlockType.TILESET, 32, 176, 16, 16),
 
     WALL(LevelBlockType.TILESET, 48, 160, 16, 16),
+    WALL_2(LevelBlockType.TILESET, 144, 0, 16, 16),
 
     STAIRS_FRONT(LevelBlockType.TILESET, 128, 144, 48, 48),
 
@@ -18,6 +19,11 @@ public enum LevelBlockData {
     BUILDING_WALL(LevelBlockType.BUILDING, 96, 48, 48, 32),
 
     COMPUTER(LevelBlockType.PROP, 128, 0, 16, 48),
+
+    DECO_1(LevelBlockType.PROP, 112, 0, 16, 48),
+    DECO_2(LevelBlockType.PROP, 0, 80, 16, 16),
+    DECO_3(LevelBlockType.PROP, 0, 64, 48, 32),
+    DECO_4(LevelBlockType.PROP, 140, 80, 48, 16),
     ;
     private final LevelBlockType type;
     private final int x, y;
